@@ -1,216 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Neon Belly - high-voltage 90s rock and nu-metal party band.">
-    <title>Neon Belly</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;600;800;900&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <span class="page-top-anchor" id="top" aria-hidden="true"></span>
-    <div class="noise" aria-hidden="true"></div>
-    <div class="scanlines" aria-hidden="true"></div>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Belly | 90s &amp; 2000s Alt-Rock + Grunge Cover Band</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Yellowtail&family=Shrikhand&family=Rubik+Puddles&family=Rubik+Bubbles&family=Rubik+Distressed&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Burned&family=Rubik+Glitch&family=Rubik+Beastly&family=Rubik+Moonrocks&family=Rubik+Vinyl&family=Lacquer&family=Stardos+Stencil:wght@400;700&family=Saira+Stencil+One&family=Special+Elite&family=Oswald:wght@300&family=Barlow+Condensed:wght@200&family=Josefin+Sans:wght@300&family=Teko:wght@300&family=Chakra+Petch:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=69">
+</head>
+<body>
 
-    <header class="site-header">
-      <a class="brand-link" href="#top" aria-label="Neon Belly home">
-        <span class="brand-mark"><img src="assets/neon-belly-logo-transparent.png" alt=""></span>
-        <span>Neon Belly</span>
+<header class="site-header">
+  <div class="nav-row">
+    <div class="nav-brand">NEON <span>BELLY</span></div>
+    <nav class="main-nav">
+      <a href="index.html" class="current">Home</a>
+      <a href="shows.html">Shows</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+      <a href="booking.html">Booking</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <h1 class="display hero-title" data-text="Neon Belly">Neon Belly</h1>
+  <p class="tagline">High-energy 90s/2000s alt-rock, heavy riffs &amp; grunge anthems.
+  Based in Nashville/Franklin, TN.</p>
+
+  <div class="stamp-row">
+    <span class="hero-title genre-tag rock" data-text="Rock">Rock</span>
+    <span class="hero-title genre-tag grunge" data-text="Grunge">Grunge</span>
+    <span class="hero-title genre-tag metal" data-text="Metal">Metal</span>
+  </div>
+
+  <div class="cta-row">
+    <a class="btn facebook" href="https://www.facebook.com/neonbellyTN" target="_blank" rel="noopener"><span class="icon-badge fb">f</span> Facebook</a>
+    <a class="btn instagram" href="https://www.instagram.com/neonbelly_band" target="_blank" rel="noopener"><span class="icon-badge ig">◎</span> Instagram</a>
+    <a class="btn youtube" href="https://www.youtube.com/@NEONBELLYBAND" target="_blank" rel="noopener"><span class="icon-badge yt">▶</span> YouTube</a>
+    <a class="btn book" href="booking.html">Book Us</a>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <section class="block-section">
+    <h2 class="section-title">Shows</h2>
+    <p class="section-sub">Where to catch us next.</p>
+
+    <div class="shows-list" data-empty-cta>
+      <div class="show-row">
+        <a class="show-row-link venue" href="https://www.facebook.com/events/1028721489974760/" target="_blank" rel="noopener">The Pond, Franklin, TN</a>
+        <span class="details">Sat, Oct 3, 2026 &middot; 8:00 PM &ndash; 11:00 PM</span>
+      </div>
+      <!-- Add an upcoming show by copying this block inside .shows-list:
+      <div class="show-row">
+        <span class="venue">Venue Name, City, State</span>
+        <span class="details">Date · Doors/Set Time</span>
+      </div>
+      While no .show-row exists here, js/script.js swaps in the booking CTA. -->
+    </div>
+
+    <p class="shows-secondary" style="margin-top:20px;"><a href="shows.html">&raquo; See all shows, including past gigs</a></p>
+  </section>
+
+  <section class="block-section">
+    <h2 class="section-title">The Band</h2>
+    <div class="member-grid">
+
+      <a class="member-card" href="members/vocals.html">
+        <span class="member-role">Vocals</span>
+        <img class="photo-placeholder thumb" src="images/members/vocals.jpg" alt="Hedge">
+        <h3>Hedge</h3>
       </a>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="#shows">Shows</a>
-        <a href="#arcade">Arcade</a>
-        <a href="#gallery">Photos</a>
-        <a href="#socials">Socials</a>
-        <a class="nav-cta" href="#booking">Booking</a>
-      </nav>
-    </header>
 
-    <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-bg" aria-hidden="true"></div>
-        <div class="hero-vignette" aria-hidden="true"></div>
-        <div class="hero-stage">
-          <div class="logo-show" aria-label="Neon Belly animated logo">
-            <h1 id="hero-title" class="sr-only">Neon Belly</h1>
-            <div class="real-logo" role="img" aria-label="Neon Belly neon triangle logo">
-              <img class="logo-part logo-foundation top" src="assets/neon-belly-logo-transparent.png" alt="">
-              <img class="logo-part logo-foundation bottom" src="assets/neon-belly-logo-transparent.png" alt="">
-              <img class="logo-part logo-belly" src="assets/neon-belly-logo-transparent.png" alt="">
-              <img class="logo-part logo-final" src="assets/neon-belly-logo-transparent.png" alt="">
-            </div>
-            <span class="pen-light" aria-hidden="true"></span>
-          </div>
+      <a class="member-card" href="members/guitar-lead.html">
+        <span class="member-role">Guitar</span>
+        <img class="photo-placeholder thumb" src="images/members/guitar-lead.jpg" alt="Jhonatan (Cucu) Aguilar">
+        <h3>Jhonatan (Cucu) Aguilar</h3>
+      </a>
 
-          <div class="hero-copy">
-            <p class="eyebrow">90s rock / nu-metal / neon party machine</p>
-            <h2>Big hooks. Loud guitars. Zero chill.</h2>
-            <p>Neon Belly brings a blacklight arcade cabinet to the stage: crunchy riffs, singalong choruses, and a show built for the front row.</p>
-            <div class="hero-actions">
-              <a class="button primary" href="#booking">Book the band</a>
-              <a class="button ghost" href="#arcade">Play the arcade</a>
-            </div>
-          </div>
-        </div>
-        <a class="scroll-cue" href="#shows" aria-label="Skip to shows">Scroll</a>
-      </section>
+      <a class="member-card" href="members/guitar-rhythm.html">
+        <span class="member-role">Guitar</span>
+        <img class="photo-placeholder thumb" src="images/members/guitar-rhythm.jpg" alt="Brett Holden" style="object-position: 50% 31%; transform: scale(1.15); clip-path: inset(0);">
+        <h3>Brett Holden</h3>
+      </a>
 
-      <section class="ticker" aria-label="Band highlights">
-        <div class="ticker-track">
-          <span>Live band</span>
-          <span>90s rock</span>
-          <span>Nu-metal anthems</span>
-          <span>Club shows</span>
-          <span>Private events</span>
-          <span>Arcade energy</span>
-          <span>Live band</span>
-          <span>90s rock</span>
-          <span>Nu-metal anthems</span>
-          <span>Club shows</span>
-          <span>Private events</span>
-          <span>Arcade energy</span>
-        </div>
-      </section>
+      <a class="member-card" href="members/bass.html">
+        <span class="member-role">Bass</span>
+        <img class="photo-placeholder thumb" src="images/members/bass.jpg" alt="Chris Lee" style="object-position: 78% 32%; transform: scale(1.15); clip-path: inset(0);">
+        <h3>Chris Lee</h3>
+      </a>
 
-      <section class="section shows-section" id="shows" aria-labelledby="shows-title">
-        <div class="section-heading">
-          <p class="eyebrow">Insert coin</p>
-          <h2 id="shows-title">Next shows</h2>
-          <p>Add confirmed dates in one place and the board updates automatically.</p>
-        </div>
-        <div class="show-grid" id="showGrid" aria-live="polite"></div>
-      </section>
+      <a class="member-card" href="members/drums.html">
+        <span class="member-role">Drums</span>
+        <img class="photo-placeholder thumb" src="images/members/drums.jpg" alt="Nate">
+        <h3>Nate</h3>
+      </a>
 
-      <section class="section arcade-section" id="arcade" aria-labelledby="arcade-title">
-        <div class="section-heading">
-          <p class="eyebrow">Bonus stage</p>
-          <h2 id="arcade-title">Neon Belly Arcade</h2>
-          <p>Three fast games built into a little cabinet. Short rounds, loud colors, high-score hooks.</p>
-        </div>
+    </div>
+  </section>
 
-        <div class="arcade-cabinet">
-          <div class="cabinet-top">
-            <span class="marquee-bulb"></span>
-            <span>Neon Belly</span>
-            <span class="marquee-bulb"></span>
-          </div>
-          <div class="cabinet-screen">
-            <div class="game-tabs" role="tablist" aria-label="Arcade games">
-              <button class="game-tab active" type="button" data-game="dodge" role="tab" aria-selected="true">Feedback Dodge</button>
-              <button class="game-tab" type="button" data-game="tap" role="tab" aria-selected="false">Kick Drum</button>
-              <button class="game-tab" type="button" data-game="memory" role="tab" aria-selected="false">Gear Flip</button>
-            </div>
+  <section class="block-section" style="border-bottom:none;">
+    <h2 class="section-title">From The Blog</h2>
+    <p class="section-sub">Show recaps and band news.</p>
 
-            <article class="game-panel active" data-panel="dodge" aria-labelledby="dodge-title">
-              <div class="game-head">
-                <h3 id="dodge-title">Feedback Dodge</h3>
-                <p>Move with arrows or A/D. Grab notes, dodge static.</p>
-              </div>
-              <canvas id="dodgeCanvas" width="720" height="360" aria-label="Feedback Dodge game"></canvas>
-              <div class="score-row">
-                <span>Score <strong id="dodgeScore">0</strong></span>
-                <span>Lives <strong id="dodgeLives">3</strong></span>
-                <span>Best <strong id="dodgeBest">0</strong></span>
-              </div>
-              <button class="button small" id="dodgeStart" type="button">Start run</button>
-            </article>
+    <div class="post-rollup">
 
-            <article class="game-panel" data-panel="tap" aria-labelledby="tap-title">
-              <div class="game-head">
-                <h3 id="tap-title">Kick Drum</h3>
-                <p>Hold the pedal to wind it up. Release to kick the drum through the stack and drop all three guitars.</p>
-              </div>
-              <canvas id="kickCanvas" width="720" height="360" aria-label="Kick Drum arcade game"></canvas>
-              <div class="score-row">
-                <span>Guitars <strong id="kickTargets">0</strong>/3</span>
-                <span>Shots <strong id="kickShots">0</strong></span>
-                <span>Best <strong id="kickBest">0</strong></span>
-              </div>
-              <div class="kick-controls">
-                <div class="meter" aria-label="Pedal power">
-                  <span id="kickMeter"></span>
-                </div>
-                <button class="pedal-button" id="kickButton" type="button">Hold pedal</button>
-                <button class="button small" id="kickReset" type="button">Reset stack</button>
-              </div>
-            </article>
+      <a class="post-teaser" href="blog.html#kimbros-2026-08-08">
+        <img class="post-teaser-poster" src="images/shows/kimbros-2026-08-08.png" alt="Kimbro's show poster">
+        <span class="post-teaser-body">
+          <span class="post-teaser-date">August 9, 2026</span>
+          <span class="post-teaser-title">Kimbro's, Front to Back</span>
+          <span class="post-teaser-excerpt">Some rooms you walk into and immediately want
+          to earn. Kimbro's is one of those rooms.</span>
+          <span class="post-teaser-more">Read the recap &raquo;</span>
+        </span>
+      </a>
 
-            <article class="game-panel" data-panel="memory" aria-labelledby="memory-title">
-              <div class="game-head">
-                <h3 id="memory-title">Gear Flip</h3>
-                <p>Match the stage icons before the crowd gets restless.</p>
-              </div>
-              <div class="memory-board" id="memoryBoard" aria-label="Stage gear matching cards"></div>
-              <div class="score-row">
-                <span>Moves <strong id="memoryMoves">0</strong></span>
-                <span>Matches <strong id="memoryMatches">0</strong>/6</span>
-                <span>Best <strong id="memoryBest">--</strong></span>
-              </div>
-              <button class="button small" id="memoryStart" type="button">Shuffle</button>
-            </article>
-          </div>
-          <div class="cabinet-controls" aria-hidden="true">
-            <span></span><span></span><span></span><span></span>
-          </div>
-        </div>
-      </section>
+      <a class="post-teaser" href="blog.html#the-pond-2026-07-11">
+        <span class="post-teaser-poster-fill">
+          <img class="post-teaser-poster poster-tint-fade" src="images/shows/the-pond-2026-07-11.png" alt="The Pond show poster">
+        </span>
+        <span class="post-teaser-body">
+          <span class="post-teaser-date">July 12, 2026</span>
+          <span class="post-teaser-title">Debut Night at The Pond</span>
+          <span class="post-teaser-excerpt">Every band gets exactly one first show. Ours
+          was July 11 at The Pond, and we are still a little stunned at how it went.</span>
+          <span class="post-teaser-more">Read the recap &raquo;</span>
+        </span>
+      </a>
 
-      <section class="section gallery-section" id="gallery" aria-labelledby="gallery-title">
-        <div class="section-heading">
-          <p class="eyebrow">Photo wall</p>
-          <h2 id="gallery-title">Band photos</h2>
-          <p>Drop real band images into the gallery and these frames are ready to light them up.</p>
-        </div>
-        <div class="photo-grid" id="photoGrid"></div>
-      </section>
+    </div>
 
-      <section class="section socials-section" id="socials" aria-labelledby="socials-title">
-        <div class="section-heading">
-          <p class="eyebrow">Live wire</p>
-          <h2 id="socials-title">Social feed</h2>
-          <p>Facebook embeds directly. Instagram shows the public profile and can also embed selected public posts.</p>
-        </div>
-        <div class="social-layout">
-          <div class="social-card">
-            <div class="social-card-head">
-              <h3>Instagram</h3>
-              <a id="instagramLink" href="#" target="_blank" rel="noreferrer">Open profile</a>
-            </div>
-            <div class="post-stack" id="instagramPosts"></div>
-          </div>
-          <div class="social-card">
-            <div class="social-card-head">
-              <h3>Facebook</h3>
-              <a id="facebookLink" href="#" target="_blank" rel="noreferrer">Open page</a>
-            </div>
-            <div class="facebook-frame" id="facebookFrame"></div>
-          </div>
-        </div>
-      </section>
+    <p style="margin-top:18px;"><a href="blog.html">&raquo; Read all posts</a></p>
+  </section>
 
-      <section class="section booking-section" id="booking" aria-labelledby="booking-title">
-        <div class="booking-panel">
-          <div>
-            <p class="eyebrow">Booking info</p>
-            <h2 id="booking-title">Bring Neon Belly to your room.</h2>
-            <p>Clubs, festivals, private parties, and the kind of night that needs a wall of guitar and a glowing triangle.</p>
-          </div>
-          <div class="booking-actions">
-            <a class="button primary" id="bookingEmail" href="mailto:booking@neonbellyband.com">booking@neonbellyband.com</a>
-            <a class="button ghost" href="#socials">Follow the band</a>
-          </div>
-        </div>
-      </section>
-    </main>
+</div>
 
-    <footer class="site-footer">
-      <span>Neon Belly</span>
-      <span>90s rock / nu-metal / Tennessee</span>
-    </footer>
+<footer>
+  <p>
+    <a href="https://www.facebook.com/neonbellyTN" target="_blank" rel="noopener">Facebook</a> ·
+    <a href="https://www.instagram.com/neonbelly_band" target="_blank" rel="noopener">Instagram</a> ·
+    <a href="https://www.youtube.com/@NEONBELLYBAND" target="_blank" rel="noopener">YouTube</a> ·
+    <a href="mailto:neonbellytn@gmail.com">neonbellytn@gmail.com</a>
+  </p>
+  <p>&copy; <span id="year"></span> Neon Belly. Last updated: <span id="footer-updated"></span>.</p>
+</footer>
 
-    <script type="module" src="script.js"></script>
-  </body>
+<script src="js/script.js?v=69"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
 </html>

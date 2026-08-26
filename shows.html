@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Belly | Shows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Yellowtail&family=Shrikhand&family=Rubik+Puddles&family=Rubik+Bubbles&family=Rubik+Distressed&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Burned&family=Rubik+Glitch&family=Rubik+Beastly&family=Rubik+Moonrocks&family=Rubik+Vinyl&family=Lacquer&family=Stardos+Stencil:wght@400;700&family=Saira+Stencil+One&family=Special+Elite&family=Oswald:wght@300&family=Barlow+Condensed:wght@200&family=Josefin+Sans:wght@300&family=Teko:wght@300&family=Chakra+Petch:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=69">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-row">
+    <div class="nav-brand">NEON <span>BELLY</span></div>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="shows.html" class="current">Shows</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+      <a href="booking.html">Booking</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" style="padding:40px 16px 30px;">
+  <h1 class="display hero-title hero-title-sm" data-text="Shows">Shows</h1>
+  <p class="tagline">Upcoming dates and where we've played.</p>
+</div>
+
+<div class="page-wrap">
+
+  <section class="block-section">
+    <h2 class="section-title">Upcoming Shows</h2>
+
+    <div class="shows-list" data-empty-cta>
+      <div class="show-row">
+        <a class="show-row-link venue" href="https://www.facebook.com/events/1028721489974760/" target="_blank" rel="noopener">The Pond, Franklin, TN</a>
+        <span class="details">Sat, Oct 3, 2026 &middot; 8:00 PM &ndash; 11:00 PM</span>
+      </div>
+      <!-- Add an upcoming show by copying this block inside .shows-list:
+      <div class="show-row">
+        <span class="venue">Venue Name, City, State</span>
+        <span class="details">Date · Doors/Set Time</span>
+      </div>
+      While no .show-row exists here, js/script.js swaps in the booking CTA. -->
+    </div>
+
+    <p class="shows-secondary" style="margin-top:16px;">Want us at your bar, club, or private event?
+    <a href="booking.html">See booking info &raquo;</a></p>
+  </section>
+
+  <section class="block-section" style="border-bottom:none;">
+    <h2 class="section-title">Previous Shows</h2>
+    <p class="section-sub">Flyers from gigs we've played.</p>
+
+    <div class="poster-grid">
+
+      <a class="poster-card" href="blog.html#kimbros-2026-08-08">
+        <img src="images/shows/kimbros-2026-08-08.png" alt="Neon Belly live at Kimbro's, August 8 2026"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="poster-placeholder" style="display:none;">POSTER COMING SOON</div>
+        <div class="show-venue">Live at Kimbro's</div>
+        <div class="show-date">Aug 8, 2026 · Franklin, TN</div>
+        <span class="read-recap">Read the recap &raquo;</span>
+      </a>
+
+      <a class="poster-card" href="blog.html#the-pond-2026-07-11">
+        <div class="poster-fill">
+          <img class="poster-tint-fade" src="images/shows/the-pond-2026-07-11.png" alt="Neon Belly live at The Pond, July 11 2026"
+               onerror="this.parentElement.style.display='none'; this.closest('.poster-card').querySelector('.poster-placeholder').style.display='flex';">
+        </div>
+        <div class="poster-placeholder" style="display:none;">POSTER COMING SOON</div>
+        <div class="show-venue">Live at The Pond</div>
+        <div class="show-date">Jul 11, 2026 · Franklin, TN</div>
+        <span class="read-recap">Read the recap &raquo;</span>
+      </a>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>
+    <a href="https://www.facebook.com/neonbellyTN" target="_blank" rel="noopener">Facebook</a> ·
+    <a href="https://www.instagram.com/neonbelly_band" target="_blank" rel="noopener">Instagram</a> ·
+    <a href="https://www.youtube.com/@NEONBELLYBAND" target="_blank" rel="noopener">YouTube</a> ·
+    <a href="mailto:neonbellytn@gmail.com">neonbellytn@gmail.com</a>
+  </p>
+  <p>&copy; <span id="year"></span> Neon Belly. Last updated: <span id="footer-updated"></span>.</p>
+</footer>
+
+<script src="js/script.js?v=69"></script>
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

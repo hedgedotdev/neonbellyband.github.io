@@ -1,93 +1,57 @@
-# Neon Belly
+# Neon Belly — Website
 
-Official static website for Neon Belly, a Tennessee 90s rock / nu-metal band. The site is built as plain HTML, CSS, and browser JavaScript with Vite for local development and production builds.
+Static, no-build-step site for the band: a DIY gig-poster / neon-sign look
+matching Neon Belly's actual show flyers and Instagram branding. Plain
+HTML/CSS/JS — open `index.html` in a browser, no server or tooling required
+(though `.claude/launch.json` has a `python -m http.server 8420` config if
+you want one for local preview).
 
-## Features
+## Structure
 
-- Animated landing screen using the real Neon Belly logo
-- Booking contact section
-- Instagram profile embed and Facebook page timeline embed
-- Band photo slots ready for real assets
-- Arcade cabinet section with three browser games:
-  - Feedback Dodge
-  - Kick Drum
-  - Gear Flip
-- Static hosting friendly: no server runtime or private API keys required
-
-## Local Development
-
-```bash
-npm install
-npm run dev
+```
+index.html              Home: hero, upcoming shows teaser, band, blog teaser
+shows.html                Upcoming shows + Previous Shows poster gallery
+blog.html                  Blog — duplicate the .blog-post block for each new post
+booking.html                 Booking info + contact
+members/
+  vocals.html                Lead vocals
+  guitar-lead.html             Lead guitar
+  guitar-rhythm.html            Rhythm guitar
+  bass.html                     Bass
+  drums.html                     Drums
+css/style.css                    All styling (neon/black + gig-poster theme, fonts via Google Fonts)
+js/script.js                      "Last updated" footer stamp
+images/shows/                      Show poster flyers — see images/shows/README.md
+images/                              Band/member photos — see images/README.md
 ```
 
-Vite will print a local URL, usually `http://localhost:5173/`.
+## Real content already wired in
 
-Production build and preview:
+Pulled from the band's Instagram (@neonbelly_band):
 
-```bash
-npm run build
-npm run preview
-```
+- Facebook: https://www.facebook.com/neonbellyTN
+- Instagram: https://www.instagram.com/neonbelly_band
+- YouTube: https://www.youtube.com/@NEONBELLYBAND
+- Booking email: neonbellytn@gmail.com
+- Bio: "High-energy 90s/2000s alt-rock, heavy riffs & grunge anthems." — Nashville/Franklin, TN
+- Two past-show posters (Kimbro's, The Pond) in `images/shows/`, shown on `shows.html`
 
-The production build is generated in `dist/`.
+## To customize
 
-## Project Structure
+- **Text**: every `[bracketed placeholder]` is meant to be replaced —
+  member names/bios, booking details, blog posts, upcoming show dates.
+- **Photos**: band/member photo boxes are dashed-border placeholders. See
+  [images/README.md](images/README.md) for filenames and how to swap in `<img>` tags.
+- **Past shows**: add a new `.poster-card` block to `shows.html` (copy an
+  existing one) each time you play a show, newest first. Drop the flyer
+  image in `images/shows/` — see [images/shows/README.md](images/shows/README.md).
+  The `.poster-tint-fade` CSS class recolors a black-line/transparent
+  flyer to a faded pink-purple tint (used for The Pond poster); drop it
+  if a new flyer is already in full color.
+- **Blog posts**: `blog.html` has a few placeholder `<article class="blog-post">`
+  entries — copy that block for each new post, newest first.
 
-```text
-neonbellyband.com/
-├── assets/
-│   ├── arcade-stage.png
-│   ├── neon-belly-logo.png
-│   └── neon-belly-logo-transparent.png
-├── index.html
-├── script.js
-├── styles.css
-├── package-lock.json
-├── package.json
-├── vite.config.js
-└── README.md
-```
+## Deploying
 
-## Edit Band Info
-
-Update `bandConfig` at the top of `script.js`:
-
-- `bookingEmail`
-- `instagramUrl`
-- `facebookUrl`
-- `shows`
-- `photos`
-- `instagramPosts`
-
-Facebook uses the official Page Plugin iframe for the public page timeline. Instagram uses the official embed script for the public profile or selected public posts; full live-feed pulling would require Meta API access and should not be done with exposed browser-side tokens.
-
-## Add Photos
-
-Place band images in `assets/`, then set each photo object:
-
-```js
-photos: [
-  { src: "assets/live-1.jpg", caption: "Live lights" },
-  { src: "assets/band-shot.jpg", caption: "Band shot" },
-  { src: "assets/crowd.jpg", caption: "Crowd noise" }
-]
-```
-
-## Logo Files
-
-The downloaded band logo is copied to `assets/neon-belly-logo.png`. The site uses `assets/neon-belly-logo-transparent.png`, a transparent-background web copy generated from that source so the neon mark can sit directly on the stage backdrop.
-
-## Hold The Set List
-
-Keep song titles out of `index.html` and `script.js` until after the first show. The arcade memory game uses generic stage-gear labels, so it can stay live without revealing the set.
-
-## Deployment
-
-Repository remote:
-
-```bash
-git@github.com:hedgedotdev/neonbellyband.github.io.git
-```
-
-The root `index.html` can be served directly by GitHub Pages. For a bundled production deploy, run `npm run build` and publish `dist/` through GitHub Pages or a GitHub Actions Pages workflow.
+Plain static files — deploys as-is to GitHub Pages, Netlify, Vercel, or
+any static host, no build step needed.
