@@ -1,0 +1,2186 @@
+/* =========================================================
+   NEON BELLY — DIY gig-poster / neon-sign band site.
+   Dark, high-contrast, hand-marker headlines, torn stamp
+   badges — matches the band's actual show flyers and Instagram
+   branding rather than a generic template look.
+   Bare-bones scaffold. Swap colors/images/copy as you like.
+   ========================================================= */
+
+:root {
+  --bg:         #08080a;
+  --panel:      #0f0f12;
+  --panel-alt:  #141418;
+  --pink:       #e01a94;   /* dirtier magenta, less bubblegum */
+  --purple:     #6d2fb8;
+  --green:      #8fa61e;   /* sickly olive instead of mint */
+  --rust:       #b1341f;
+  --cream:      #ddd6c4;   /* aged newsprint, not bright white */
+  --text:       #d6d4dc;
+  --text-dim:   #7d7889;
+  --border:     #26242c;
+  --link:       #e85fc0;
+
+  /* Tokens the theme switcher swaps. Kept as rgb triplets where they feed
+     rgba(), since rgba() cannot take a hex var. */
+  --accent-rgb:   224, 26, 148;   /* primary accent, matches --pink   */
+  --accent2-rgb:  109, 47, 184;   /* secondary accent, matches --purple */
+  --accent2:      var(--accent2);        /* lit secondary, used on hovers    */
+  --accent2-hi:   var(--accent2-hi);
+  --glow-pale:    #ffc7e8;        /* hero wordmark bloom, palest core */
+  --glow-mid:     #ff5ec0;
+  --glow-hot:     255, 60, 150;
+  --glow-deep:    160, 12, 74;
+  --title-ink:    #fff0f6;
+
+  --font-display: "Stardos Stencil", Arial, sans-serif;
+  --display-weight: 400;
+  /* the wordmark can follow --font-display or be set independently */
+  --font-title: var(--font-display);
+  --book:     #2dff9b;
+  --book-rgb: 45, 255, 155;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* site-wide film grain — keeps everything feeling dirty/photocopied */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  background-size: 200px 200px;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; display: block; }
+
+.page-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: normal;
+}
+
+.block {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-weight: normal;
+}
+
+/* ---------- Nav ---------- */
+
+header.site-header {
+  border-bottom: 3px solid var(--pink);
+  background: var(--panel);
+}
+
+.nav-row {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight, 400);
+  font-size: 22px;
+  color: #fff;
+}
+
+/* NEON takes the brighter of the two, BELLY the deeper one */
+.nav-brand      { color: var(--accent2-hi); }
+.nav-brand span { color: var(--pink); }
+
+nav.main-nav a {
+  display: inline-block;
+  margin-left: 18px;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+nav.main-nav a:hover,
+nav.main-nav a.current {
+  color: var(--pink);
+  text-decoration: none;
+}
+
+/* ---------- Hero (old-TV static + scanlines) ---------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 60px 16px 40px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Real TV static: per-pixel noise painted to a canvas by js/script.js.
+   The SVG-turbulence layer below is only a fallback for no-JS; it is
+   hidden as soon as the canvas is in place (.hero.static-on). */
+.static-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 140px 140px;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  animation: static-flicker 0.32s steps(5) infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero.static-on::before { display: none; }
+
+/* Scanline/aperture grille pass that sits ABOVE the headline, so the lines
+   cut across the letters and the type reads as part of the screen rather
+   than as artwork floating in front of it. Injected by js/script.js. */
+.crt-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    repeating-linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.34) 0px,
+      rgba(0, 0, 0, 0.34) 1px,
+      transparent 2px,
+      transparent 4px);
+  mix-blend-mode: multiply;
+}
+
+/* slow bright bloom rolling down the tube */
+.crt-lines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.045) 48%, transparent 100%);
+  background-size: 100% 46%;
+  background-repeat: no-repeat;
+  mix-blend-mode: screen;
+  animation: crt-bloom 7s linear infinite;
+}
+
+@keyframes crt-bloom {
+  0%   { background-position: 0 -60%; }
+  100% { background-position: 0 160%; }
+}
+
+/* scanlines + the pink glow, layered above the static */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    /* darkened core keeps the headline and body copy readable over the snow */
+    radial-gradient(ellipse at 50% 55%, rgba(8, 8, 10, 0.82) 0%, rgba(8, 8, 10, 0.5) 42%, transparent 72%),
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.42) 0px, rgba(0, 0, 0, 0.42) 1px, transparent 2px, transparent 4px),
+    radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.16), transparent 62%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes static-flicker {
+  0%   { transform: translate(0, 0); opacity: 0.26; }
+  20%  { transform: translate(-3%, 2%); opacity: 0.42; }
+  40%  { transform: translate(2%, -3%); opacity: 0.3; }
+  60%  { transform: translate(-2%, 3%); opacity: 0.46; }
+  80%  { transform: translate(3%, -2%); opacity: 0.28; }
+  100% { transform: translate(0, 0); opacity: 0.26; }
+}
+
+/* faint tracking-error band that sweeps down every few seconds */
+/* CRT tube glow: the picture falls off into darkness at the corners and a
+   soft phosphor halo rims the inside edges, the way light spills off the
+   glass of a real set. Replaces the old sweeping tracking band. */
+.tv-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  box-shadow:
+    /* darkened tube edges / corner falloff */
+    inset 0 0 70px 24px rgba(0, 0, 0, 0.9),
+    inset 0 0 150px 10px rgba(0, 0, 0, 0.55),
+    /* phosphor rim — warm magenta bleeding off the glass */
+    inset 0 0 42px rgba(var(--accent-rgb), 0.28),
+    inset 0 0 90px rgba(var(--accent2-rgb), 0.18);
+  /* softly rounded like tube glass, so the corners aren't hard rectangles */
+  border-radius: 14px / 22px;
+  animation: tube-breathe 5.5s ease-in-out infinite;
+}
+
+/* the tube's brightness never sits perfectly still */
+@keyframes tube-breathe {
+  0%, 100% { opacity: 1; }
+  47%      { opacity: 0.88; }
+  62%      { opacity: 1.0; }
+}
+
+.hero h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--font-title);
+  /* --title-scale lets a display face be sized down without touching the
+     per-page sizes; faces vary hugely in cap height and width. */
+  font-size: calc(64px * var(--title-scale, 1));
+  color: #fff;
+  text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.55), 0 0 40px rgba(var(--accent2-rgb), 0.35);
+}
+
+/* VHS chromatic-aberration wobble, for the big "Neon Belly" wordmark only */
+/* Wordmark: a lit neon sign burning into the screen — pale-hot core
+   bleeding out through magenta into deep red, the way a practical sign
+   blooms on video. Glitch slices still ride on top on their own timings. */
+.hero-title {
+  display: inline-block;
+  position: relative;
+  isolation: isolate;
+  color: var(--title-ink);
+  /* tight inner burn */
+  text-shadow:
+    0 0 1px #fff,
+    0 0 6px var(--glow-pale),
+    0 0 14px var(--glow-mid),
+    0 0 26px var(--pink);
+  /* wide halo — drop-shadow blooms far better than text-shadow at radius */
+  --bloom:
+    drop-shadow(0 0 10px rgba(var(--glow-hot), 0.95))
+    drop-shadow(0 0 26px rgba(var(--accent-rgb), 0.85))
+    drop-shadow(0 0 55px rgba(var(--glow-hot), 0.7))
+    drop-shadow(0 0 95px rgba(var(--glow-deep), 0.6));
+  filter: var(--bloom);
+  animation: vhs-drift 5s ease-in-out infinite, sign-flicker 7s linear infinite;
+}
+
+/* uneven mains power — the sign never sits perfectly still */
+@keyframes sign-flicker {
+  0%, 100% { opacity: 1;    filter: brightness(1) var(--bloom); }
+  8%       { opacity: 0.86; filter: brightness(0.86) var(--bloom); }
+  9%       { opacity: 1;    filter: brightness(1.1) var(--bloom); }
+  27%      { opacity: 1;    filter: brightness(1) var(--bloom); }
+  28%      { opacity: 0.68; filter: brightness(0.72) var(--bloom); }
+  29%      { opacity: 1;    filter: brightness(1.16) var(--bloom); }
+  30%      { opacity: 0.9;  filter: brightness(0.94) var(--bloom); }
+  31%      { opacity: 1;    filter: brightness(1) var(--bloom); }
+  63%      { opacity: 1;    filter: brightness(1) var(--bloom); }
+  64%      { opacity: 0.76; filter: brightness(0.82) var(--bloom); }
+  65%      { opacity: 1;    filter: brightness(1.08) var(--bloom); }
+  88%      { opacity: 1;    filter: brightness(1) var(--bloom); }
+  89%      { opacity: 0.8;  filter: brightness(0.86) var(--bloom); }
+  90%      { opacity: 1;    filter: brightness(1) var(--bloom); }
+}
+
+/* Displaced copies of the wordmark. These are ADDITIVE (screen blend, no
+   background fill) — an opaque plate here would punch visible black boxes
+   through the sign's bloom mid-glitch. Light smears sideways instead. */
+.hero-title::before,
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: var(--title-ink);
+  background: none;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* upper slice — drags red */
+.hero-title::before {
+  text-shadow: -2px 0 rgba(255, 245, 245, 0.5), 1px 0 rgba(190, 225, 235, 0.25);
+  filter: blur(0.7px);
+  animation: slice-top 6.5s cubic-bezier(.2,.8,.3,1) infinite;
+}
+
+/* lower slice — drags cyan */
+.hero-title::after {
+  text-shadow: 2px 0 rgba(225, 240, 245, 0.45), -1px 0 rgba(255, 235, 235, 0.25);
+  filter: blur(0.9px);
+  animation: slice-bottom 6.5s cubic-bezier(.2,.8,.3,1) infinite;
+}
+
+/* base text breathes slightly the whole time, like unstable tape */
+@keyframes vhs-drift {
+  0%, 100% { transform: translate(0, 0) skewX(0deg); }
+  30%      { transform: translate(-0.4px, 0.3px) skewX(0.12deg); }
+  62%      { transform: translate(0.4px, -0.3px) skewX(-0.12deg); }
+  78%      { transform: translate(-1.2px, 0.6px) skewX(-0.4deg); }
+  81%      { transform: translate(1px, -0.5px) skewX(0.35deg); }
+  85%      { transform: translate(0, 0) skewX(0deg); }
+}
+
+@keyframes slice-top {
+  0%, 74%, 100% { opacity: 0; }
+  76% { opacity: 0.85; transform: translate(-5px, -1px); clip-path: inset(8% 0 66% 0); }
+  79% { opacity: 0.6;  transform: translate(4px, 0);     clip-path: inset(20% 0 57% 0); }
+  82% { opacity: 0.75; transform: translate(-3px, 1px);  clip-path: inset(12% 0 71% 0); }
+  85% { opacity: 0; }
+  93% { opacity: 0.5;  transform: translate(3px, 0);     clip-path: inset(30% 0 54% 0); }
+  96% { opacity: 0; }
+}
+
+@keyframes slice-bottom {
+  0%, 75%, 100% { opacity: 0; }
+  77% { opacity: 0.7;  transform: translate(4px, 1px);  clip-path: inset(60% 0 14% 0); }
+  80% { opacity: 0.55; transform: translate(-4px, 0);   clip-path: inset(72% 0 6% 0); }
+  83% { opacity: 0.65; transform: translate(2px, -1px); clip-path: inset(54% 0 28% 0); }
+  86% { opacity: 0; }
+  94% { opacity: 0.45; transform: translate(-3px, 0);   clip-path: inset(66% 0 16% 0); }
+  97% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before, .tv-glow, .hero-title,
+  .hero-title::before, .hero-title::after { animation: none !important; }
+  .hero-title::before, .hero-title::after { opacity: 0 !important; }
+  .static-canvas { opacity: 0.12; }
+}
+
+.hero .tagline {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  margin: 14px auto 0;
+  /* Pure white with a hard black outline — the static behind it destroys
+     contrast for any dimmed or unoutlined body copy. */
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.95),
+    -1px 1px 0 rgba(0, 0, 0, 0.95),
+    1px -1px 0 rgba(0, 0, 0, 0.95),
+    -1px -1px 0 rgba(0, 0, 0, 0.95),
+    0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* Labels and buttons sit ABOVE the CRT passes (.crt-lines z3, .tv-glow z4).
+   Underneath them the scanline multiply and the vignette were washing out
+   their text — which is why the identical buttons read fine on the booking
+   page, where they live outside the hero. The headline deliberately stays
+   below, so it keeps the scanlines running across it. */
+.hero .stamp-row {
+  position: relative;
+  z-index: 5;
+  margin: 18px 0 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* wide gap: the neon bloom on each word bleeds outward, so a tight gap
+     makes the three read as one run-on line */
+  gap: 30px;
+}
+
+.hero .cta-row {
+  position: relative;
+  z-index: 5;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ---------- Stamp badge (poster call-out look) ---------- */
+
+.stamp {
+  display: inline-block;
+  background: var(--cream);
+  color: #111;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 16px;
+  transform: rotate(-2deg);
+  clip-path: polygon(3% 12%, 12% 0%, 90% 3%, 100% 15%, 97% 88%, 88% 100%, 8% 97%, 0% 85%);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.stamp.alt { transform: rotate(2deg); }
+.stamp.pink { background: var(--pink); color: #fff; }
+.stamp.green { background: var(--green); color: #111; }
+.stamp.rust { background: var(--rust); color: #fff; }
+
+/* ---------- Genre tags ----------
+   Lit neon text in the display face — the same treatment the page titles
+   get, just smaller. They pair with the wordmark above rather than sitting
+   on it as separate hardware. Markup reuses .hero-title for the glow and
+   glitch, so these only need size and rhythm. */
+
+.genre-tag {
+  /* .hero-title carries the glow/glitch but not the face — that lives on
+     .display — so the family is set explicitly here. */
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+/* Each word runs the shared title animations on its own duration, delay and
+   direction. Identical timing across three neighbours is what makes an
+   effect read as canned, so nothing here lines up: the drift, the flicker
+   and the glitch slices all fall on different beats per word. */
+.genre-tag.rock {
+  animation-duration: 4.3s, 5.9s;
+  animation-delay: -1.1s, -2.4s;
+}
+
+.genre-tag.rock::before { animation-duration: 4.3s; animation-delay: -0.6s; }
+.genre-tag.rock::after  { animation-duration: 4.3s; animation-delay: -3.2s; }
+
+.genre-tag.grunge {
+  animation-duration: 6.7s, 4.1s;
+  animation-delay: -3.7s, -0.8s;
+  animation-direction: reverse, normal;
+}
+
+.genre-tag.grunge::before { animation-duration: 6.7s; animation-delay: -2.9s; }
+.genre-tag.grunge::after  { animation-duration: 6.7s; animation-delay: -5.4s; }
+
+.genre-tag.metal {
+  animation-duration: 5.2s, 7.3s;
+  animation-delay: -2.6s, -4.9s;
+}
+
+.genre-tag.metal::before { animation-duration: 5.2s; animation-delay: -4.1s; }
+.genre-tag.metal::after  { animation-duration: 5.2s; animation-delay: -1.7s; }
+
+@media (max-width: 700px) {
+  .genre-tag { font-size: 22px; }
+}
+
+/* ---------- Buttons ---------- */
+
+/* ---------- Neon tube buttons ----------
+   Lit gas tubes over smoked glass, each burning in its own service's colour
+   (--tube). Corner brackets mount them; a selection chevron still snaps in
+   on hover, keeping the DVD-menu behaviour. */
+
+.btn {
+  --tube: #ff45c6;
+  --tube-soft: rgba(255, 69, 198, 0.5);
+  --tube-dim: rgba(255, 69, 198, 0.16);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight, 400);
+  font-size: 13.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 12px 20px 12px 30px;
+  /* White label core with a coloured halo: reads cleanly at small sizes,
+     where fully colour-on-dark text loses too much contrast. */
+  color: #fff;
+  /* near-opaque so hero static can't bleed through and break up the label */
+  background: rgba(4, 3, 6, 0.93);
+  border: 1px solid var(--tube);
+  text-shadow: 0 0 4px var(--tube), 0 0 11px var(--tube), 0 1px 2px rgba(0, 0, 0, 0.9);
+  box-shadow:
+    0 0 9px var(--tube-soft),
+    inset 0 0 14px var(--tube-dim);
+  animation: tube-buzz 4s steps(1) infinite;
+  transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+/* corner brackets, top-left and bottom-right */
+.btn::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid var(--tube);
+  border-left: none;
+  border-top: none;
+  box-shadow: 0 0 6px var(--tube-soft);
+}
+
+/* selection chevron — hidden until the item is highlighted */
+.btn::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 7px solid var(--tube);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  transform: translate(-6px, -50%);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px var(--tube));
+  transition: opacity 0.1s steps(2), transform 0.1s steps(2);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  color: #fff;
+  text-decoration: none;
+  background: rgba(10, 6, 14, 0.82);
+  box-shadow:
+    0 0 22px var(--tube-soft),
+    inset 0 0 24px var(--tube-dim);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.btn:active { transform: translateY(1px); }
+
+/* per-service tube colours */
+.btn.facebook {
+  --tube: #3d8bff;
+  --tube-soft: rgba(61, 139, 255, 0.5);
+  --tube-dim: rgba(61, 139, 255, 0.16);
+  animation-delay: -0.4s;
+}
+
+.btn.instagram {
+  --tube: #c14ce8;
+  --tube-soft: rgba(193, 76, 232, 0.5);
+  --tube-dim: rgba(193, 76, 232, 0.16);
+  animation-delay: -1.6s;
+}
+
+.btn.youtube {
+  --tube: #ff3b30;
+  --tube-soft: rgba(255, 59, 48, 0.5);
+  --tube-dim: rgba(255, 59, 48, 0.16);
+  animation-delay: -2.7s;
+}
+
+.btn.book {
+  --tube: var(--book);
+  --tube-soft: rgba(var(--book-rgb), 0.5);
+  --tube-dim: rgba(var(--book-rgb), 0.16);
+  animation-delay: -3.5s;
+}
+
+/* The icon glyph burns in the same tube colour instead of a filled chip.
+   Selectors are doubled up on the modifier classes because .icon-badge.fb
+   and friends are defined later in this file at equal specificity. */
+.btn .icon-badge,
+.btn .icon-badge.fb,
+.btn .icon-badge.ig,
+.btn .icon-badge.yt,
+.btn .icon-badge.bk {
+  /* Real brand marks, drawn as masks so they inherit the tube colour and
+     glow with it rather than sitting there as flat coloured images. */
+  background-color: var(--tube);
+  width: 17px;
+  height: 17px;
+  border-radius: 0;
+  font-size: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  filter: drop-shadow(0 0 5px var(--tube));
+}
+
+.btn .icon-badge.fb {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z'/></svg>");
+}
+
+.btn .icon-badge.ig {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.94 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0z'/><path d='M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4z'/><circle cx='18.41' cy='5.59' r='1.44'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.94 19.86.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0z'/><path d='M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4z'/><circle cx='18.41' cy='5.59' r='1.44'/></svg>");
+}
+
+.btn .icon-badge.yt {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z'/></svg>");
+}
+
+.btn:hover .icon-badge { background-color: #fff; }
+
+/* Brief dropouts, like a tube struggling to strike. Kept shallow — deeper
+   dips made the labels flicker to the point of being hard to read. */
+@keyframes tube-buzz {
+  0%, 41%, 44%, 100% { opacity: 1; }
+  42%                { opacity: 0.86; }
+  43%                { opacity: 0.95; }
+  71%                { opacity: 0.88; }
+  72%                { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { animation: none; }
+}
+
+.icon-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 11px;
+  color: #fff;
+  flex: 0 0 auto;
+}
+
+.icon-badge.fb { background: #3b5998; }
+.icon-badge.ig { background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4); }
+.icon-badge.yt { background: #ff0000; }
+.icon-badge.bk { background: var(--pink); }
+
+/* ---------- Sections ---------- */
+
+section.block-section {
+  padding: 46px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  /* h2/h3 default to bold; Sedgwick ships one weight, so the browser fakes
+     it and thickens every stroke. Force normal to get the true letterforms. */
+  font-weight: var(--display-weight, 400);
+  /* natural casing: a hand-drawn lowercase carries far more character
+     character than an all-caps setting does */
+  text-transform: none;
+  font-size: 32px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  display: inline-block;
+  border-bottom: none;
+  padding-bottom: 16px;
+  margin: 0 0 22px;
+  text-shadow: -1.5px 0 rgba(255, 20, 90, 0.5), 1.5px 0 rgba(0, 230, 255, 0.4);
+  position: relative;
+}
+
+/* Marker-stroke underline, drawn as a masked pseudo-element so its colour
+   comes from --pink and follows the active theme. A fill baked into the data
+   URI could not be themed. */
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13px;
+  background-color: var(--pink);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 22' preserveAspectRatio='none'><path d='M3,11 C38,4 74,14 112,8 C150,2 188,13 226,7 C252,3 276,10 296,5 L297,10 C277,16 253,9 227,13 C189,19 151,8 113,14 C75,20 39,10 4,17 Z' fill='black'/><path d='M232,15 C250,12 268,17 288,13 L288,16 C268,20 250,16 232,18 Z' fill='black' opacity='0.55'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 22' preserveAspectRatio='none'><path d='M3,11 C38,4 74,14 112,8 C150,2 188,13 226,7 C252,3 276,10 296,5 L297,10 C277,16 253,9 227,13 C189,19 151,8 113,14 C75,20 39,10 4,17 Z' fill='black'/><path d='M232,15 C250,12 268,17 288,13 L288,16 C268,20 250,16 232,18 Z' fill='black' opacity='0.55'/></svg>");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
+.section-sub {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin: -16px 0 24px;
+}
+
+/* ---------- Shows ---------- */
+
+.show-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 0;
+  border-bottom: 1px dotted var(--border);
+}
+
+.show-row .venue {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* when the venue links out to the event page (Facebook, ticketing, etc.) */
+a.show-row-link.venue {
+  text-decoration: none;
+  border-bottom: 1px dotted var(--text-dim);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+a.show-row-link.venue::after {
+  content: " \2197";
+  font-size: 11px;
+  color: var(--pink);
+}
+
+a.show-row-link.venue:hover {
+  color: var(--pink);
+  border-bottom-color: var(--pink);
+}
+
+.show-row .details { color: var(--text-dim); font-size: 13px; }
+
+/* empty-state call to action, injected when no .show-row is present.
+   Single row: message and button side by side, wrapping only on narrow
+   screens. */
+.shows-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  padding: 13px 18px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  background: var(--panel-alt);
+}
+
+.shows-empty-head {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+@media (max-width: 560px) {
+  .shows-empty { justify-content: center; text-align: center; }
+}
+
+.poster-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px;
+}
+
+.poster-card {
+  width: 230px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  padding: 10px;
+  text-align: center;
+}
+
+.poster-card:hover { border-color: var(--pink); }
+
+.poster-card img { margin: 0 auto 10px; }
+
+.poster-card .show-venue {
+  font-family: "Archivo Black", Arial, sans-serif;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--pink);
+}
+
+.poster-card .show-date { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+.poster-placeholder {
+  aspect-ratio: 2 / 3;
+  border: 1px dashed var(--border);
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+/* The "Pond" flyer is black line-art on a solid WHITE background (not
+   actually transparent), so the paper is recoloured with a multiply blend:
+   white paper picks up the faded pinkish-purple, black ink stays black. */
+.poster-fill {
+  background-color: #cfa4de;
+  isolation: isolate;
+  line-height: 0;
+  margin: 0 auto 10px;
+}
+
+/* margin lives on the wrapper, or the fill colour bleeds below the artwork */
+.poster-fill .poster-tint-fade {
+  mix-blend-mode: multiply;
+  margin: 0;
+}
+
+/* ---------- Photo placeholders (band/member photos) ---------- */
+
+.photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 1px solid var(--border);
+  background: #000;
+  color: var(--text-dim);
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 6px;
+}
+
+.photo-placeholder.hero-photo { width: 220px; height: 220px; margin: 0 auto 20px; }
+.photo-placeholder.thumb { width: 130px; height: 130px; margin: 0 auto 8px; }
+.photo-placeholder.member { width: 220px; height: 220px; margin: 0 auto 14px; }
+
+/* once a placeholder is a real <img>, crop it to fill the box instead of
+   letterboxing; per-photo object-position (set inline) keeps the subject
+   framed when the source isn't already square. */
+img.photo-placeholder { object-fit: cover; display: block; padding: 0; }
+
+/* ---------- Member grid ---------- */
+
+.member-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.member-card {
+  width: 160px;
+  text-align: center;
+}
+
+/* role sits above the photo, name below it */
+.member-role {
+  display: block;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--pink);
+  margin-bottom: 7px;
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+.member-card:hover .member-role {
+  color: var(--accent2-hi);
+  text-shadow: 0 0 8px rgba(168, 85, 247, 0.75), 0 0 18px rgba(168, 85, 247, 0.45);
+}
+
+.member-card h3 {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 14px;
+  margin: 8px 0 0;
+  color: #fff;
+}
+
+.member-card:hover h3 { color: var(--pink); }
+
+/* ---------- Info table (bio facts) ---------- */
+
+table.infotable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+table.infotable td {
+  padding: 6px 4px;
+  border-bottom: 1px dotted var(--border);
+  vertical-align: top;
+}
+
+table.infotable td.label {
+  font-family: "Archivo Black", Arial, sans-serif;
+  color: var(--pink);
+  font-size: 11px;
+  text-transform: uppercase;
+  width: 120px;
+  white-space: nowrap;
+}
+
+/* In the 240px sidebar a 120px label column leaves almost nothing for the
+   value, so rows stack there: label on its own line, value beneath. */
+.col-side table.infotable tr {
+  display: block;
+  border-bottom: 1px dotted var(--border);
+  padding: 7px 0;
+}
+
+.col-side table.infotable tr:last-child { border-bottom: none; }
+
+.col-side table.infotable td {
+  display: block;
+  width: auto;
+  border-bottom: none;
+  padding: 0;
+  white-space: normal;
+}
+
+.col-side table.infotable td.label {
+  width: auto;
+  margin-bottom: 3px;
+  letter-spacing: 0.6px;
+}
+
+/* ---------- Blog ---------- */
+
+.blog-post {
+  border: 1px solid var(--border);
+  background: var(--panel-alt);
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.blog-post h2 {
+  margin: 0 0 4px;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 18px;
+  color: var(--pink);
+}
+
+.blog-meta { color: var(--text-dim); font-size: 11px; margin-bottom: 10px; }
+
+/* the Pond poster is black line art on a white ground (not transparent),
+   so it gets the same fill-and-tint wrapper used on shows.html. The wrapper
+   has no fixed size of its own — it shrinks to whatever box the poster
+   ends up rendered at (see .post-gallery img below) so the tint never
+   shows past the artwork's own edges. */
+.post-gallery-poster-fill {
+  width: max-content;
+  max-width: 100%;
+  background-color: #c49ad3;
+  isolation: isolate;
+}
+
+.post-gallery-poster-fill .post-gallery-poster {
+  width: auto;
+  border: none;
+  mix-blend-mode: multiply;
+}
+
+/* ---------- Favourite covers ----------
+   Three picks per member, laid out as small setlist cards instead of a
+   comma-separated run of text in a table cell. */
+
+.cover-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cover-list li {
+  flex: 1 1 170px;
+  min-width: 160px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 13px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.cover-list li:hover {
+  background: #1d1a26;
+  border-left-color: var(--accent2);
+}
+
+.cover-num {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.1;
+  color: var(--pink);
+  opacity: 0.75;
+  flex: 0 0 auto;
+}
+
+.cover-song {
+  display: block;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: #fff;
+}
+
+.cover-artist {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+}
+
+/* ---------- Home page blog rollup ---------- */
+
+.post-rollup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.post-teaser {
+  flex: 1 1 300px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 14px;
+  padding: 14px 18px 14px 14px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  color: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.post-teaser {
+  position: relative;
+  overflow: hidden;
+}
+
+.post-teaser::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  mix-blend-mode: screen;
+  background-image:
+    /* fine grain */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='linear' slope='2.2'/></feComponentTransfer></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    /* coarser speckle drifting the other way */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/></svg>"),
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0 1px, transparent 1px 3px);
+  background-size: 120px 120px, 260px 260px, 100% 3px;
+}
+
+.post-teaser:hover {
+  background: #1d1a26;
+  border-left-color: var(--accent2);
+  text-decoration: none;
+}
+
+.post-teaser:hover::after {
+  opacity: 0.52;
+  animation: teaser-static 0.22s steps(5) infinite;
+}
+
+.post-teaser:hover { animation: teaser-flicker 1.6s steps(3) infinite; }
+
+@keyframes teaser-flicker {
+  0%, 100% { filter: brightness(1); }
+  38%      { filter: brightness(1.07); }
+  41%      { filter: brightness(0.94); }
+  72%      { filter: brightness(1.04); }
+}
+
+/* jumps the noise field each frame so it crawls like broadcast snow */
+@keyframes teaser-static {
+  0%   { background-position: 0 0,        0 0,        0 0; }
+  20%  { background-position: -31px 19px, 22px -14px, 0 1px; }
+  40%  { background-position: 24px -27px, -18px 25px, 0 0; }
+  60%  { background-position: -17px -12px, 30px 11px, 0 2px; }
+  80%  { background-position: 29px 23px,  -26px -20px, 0 1px; }
+  100% { background-position: 0 0,        0 0,        0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-teaser:hover::after { animation: none; opacity: 0.2; }
+  .post-teaser:hover { animation: none; }
+}
+
+/* poster thumbnail on the teaser card */
+.post-teaser-poster {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 96px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+/* the Pond poster is black line art on a white ground (not transparent),
+   so it needs the same fill-and-tint wrapper used on shows.html */
+.post-teaser-poster-fill {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 96px;
+  display: block;
+  background-color: #c49ad3;
+  isolation: isolate;
+}
+
+.post-teaser-poster-fill .post-teaser-poster {
+  width: 100%;
+  height: 100%;
+  border: none;
+  mix-blend-mode: multiply;
+}
+
+.post-teaser-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.post-teaser-date {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+}
+
+.post-teaser-title {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.2;
+  color: var(--pink);
+}
+
+.post-teaser:hover .post-teaser-title { color: #fff; }
+
+.post-teaser-excerpt {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.post-teaser-more {
+  margin-top: 12px;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dim);
+}
+
+.post-teaser:hover .post-teaser-more { color: var(--pink); }
+
+/* In the 240px sidebar the cover cards stack one per row rather than
+   trying to sit three across. */
+.col-side .cover-list { gap: 8px; }
+
+.col-side .cover-list li {
+  flex: 1 1 100%;
+  min-width: 0;
+  padding: 9px 11px;
+}
+
+/* ---------- Blog post photos ---------- */
+
+.post-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 14px 0 4px;
+}
+
+/* every real photo in a row shares one height; width is whatever that
+   height needs at the photo's own aspect ratio (see .post-gallery img),
+   so nothing gets cropped and figure just shrinks to fit it. */
+.post-gallery figure {
+  margin: 0;
+  width: max-content;
+  max-width: 100%;
+}
+
+/* Member-page About column: only ever holds one inline photo (not a strip
+   of three like a blog post), so it can run much bigger. Scoped to
+   .col-main so blog.html's 3-across galleries are untouched. */
+.col-main .post-gallery figure {
+  width: min(380px, 100%);
+}
+
+.col-main .post-gallery figcaption {
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.post-gallery img {
+  display: block;
+  height: 278px;
+  width: auto;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  cursor: zoom-in;
+}
+
+/* the single big member-page photo runs full width of its column instead
+   of the shared blog-row height */
+.col-main .post-gallery img {
+  height: auto;
+  width: 100%;
+}
+
+/* placeholder tile until real photos are dropped in */
+.post-photo {
+  width: 200px;
+  height: 278px;
+  border: 1px dashed var(--border);
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 10px;
+  line-height: 1.45;
+  padding: 8px;
+}
+
+.post-gallery figcaption {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.post-venue-link { font-size: 12px; color: var(--text-dim); }
+.post-venue-link a { color: var(--link); }
+
+/* ---------- Gallery lightbox ---------- */
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.92);
+  align-items: center;
+  justify-content: center;
+  padding: 64px 76px;
+}
+
+.lightbox.open { display: flex; }
+
+body.lightbox-lock { overflow: hidden; }
+
+.lightbox-figure {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.lightbox-title {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--pink);
+  text-align: center;
+}
+
+.lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 170px);
+  border: 1px solid var(--border);
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+  padding: 8px;
+  transition: color 0.15s;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover { color: var(--pink); }
+
+.lightbox-close { top: 14px; right: 20px; font-size: 32px; }
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 52px;
+}
+
+.lightbox-prev { left: 4px; }
+.lightbox-next { right: 4px; }
+
+@media (max-width: 640px) {
+  .lightbox { padding: 54px 14px; }
+  .lightbox-prev, .lightbox-next { font-size: 36px; }
+}
+
+/* poster cards on shows.html become links through to the recap */
+a.poster-card { display: block; color: inherit; }
+a.poster-card:hover { text-decoration: none; }
+
+a.poster-card .read-recap {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: "Archivo Black", Arial, sans-serif;
+  color: var(--text-dim);
+}
+
+a.poster-card:hover .read-recap { color: var(--pink); }
+
+/* ---------- Two-column layout (member pages, booking) ---------- */
+
+.two-col {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.two-col .col-side { width: 240px; flex: 0 0 auto; }
+.two-col .col-main { flex: 1 1 320px; min-width: 0; }
+
+/* ---------- Member secondary nav (band roster as a sub-header) ---------- */
+
+.member-nav {
+  background: linear-gradient(180deg, #15141a 0%, #0d0c11 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.member-nav-row {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.member-nav-label {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  padding-right: 16px;
+  white-space: nowrap;
+}
+
+.member-nav a {
+  position: relative;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  padding: 12px 14px;
+  border-bottom: 3px solid transparent;
+}
+
+.member-nav a:hover {
+  color: var(--pink);
+  text-decoration: none;
+  border-bottom-color: rgba(var(--accent-rgb), 0.5);
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+.member-nav a.current {
+  color: #fff;
+  border-bottom-color: var(--pink);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+a.member-nav-label {
+  padding: 12px 16px 12px 0;
+  border-bottom: 3px solid transparent;
+  color: var(--text-dim);
+}
+
+a.member-nav-label:hover {
+  color: var(--pink);
+  background: none;
+  border-bottom-color: transparent;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .member-nav-row { padding: 6px 10px 8px; }
+  .member-nav-label { width: 100%; padding: 6px 0 2px; }
+  .member-nav a { padding: 8px 10px; }
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+footer a { color: var(--text-dim); }
+footer a:hover { color: var(--pink); }
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 42px; }
+  .two-col .col-side { width: 100%; }
+}
+
+/* =========================================================
+   THEMES — driven by the sleeve switcher.
+   Layout and effects are shared; only colour tokens change.
+   ========================================================= */
+
+/* Album-derived palettes. Covers that are light (In Utero, Evil Empire,
+   Houdini) are read as their accent colours over a deeply tinted black:
+   the hero's glow and static need a dark ground to work against. */
+
+/* --- Open Up and Say... Ahh!: Poison (1988). Vivid orange-red field,
+   acid green logo, green eyes. Lifted well off black: the sleeve is hot,
+   not murky. --- */
+html[data-theme="poison"] {
+  --bg:         #2b0c07;
+  --panel:      #380f09;
+  --panel-alt:  #46150c;
+  --pink:       #ff5a1f;
+  --purple:     #d2401c;
+  --green:      #b8e02a;
+  --rust:       #e0661c;
+  --cream:      #f7e6b8;
+  --text:       #f2dcc6;
+  --text-dim:   #b8927a;
+  --border:     #52200f;
+  --link:       #ff7a3c;
+  --accent-rgb:  255, 90, 31;
+  --accent2-rgb: 184, 224, 42;
+  --accent2:     #b8e02a;
+  --accent2-hi:  #e0f77a;
+  --glow-pale:   #ffe0c0;
+  --glow-mid:    #ff7a3c;
+  --glow-hot:    255, 90, 31;
+  --glow-deep:   140, 35, 10;
+  --title-ink:   #fff0d8;
+  --book:        #b8e02a;
+  --book-rgb:    184, 224, 42;
+}
+
+/* --- Powerage: AC/DC (1978). Black, amber spotlight, wire yellow --- */
+html[data-theme="powerage"] {
+  --bg:         #080705;
+  --panel:      #100d08;
+  --panel-alt:  #18140d;
+  --pink:       #e8912e;
+  --purple:     #6b4a1c;
+  --green:      #f2d43c;
+  --rust:       #c0651c;
+  --cream:      #ece2cc;
+  --text:       #ded4c2;
+  --text-dim:   #8b8170;
+  --border:     #241d14;
+  --link:       #f7a63f;
+  --accent-rgb:  232, 145, 46;
+  --accent2-rgb: 107, 74, 28;
+  --accent2:     #f2d43c;
+  --accent2-hi:  #fbe98a;
+  --glow-pale:   #ffe8c0;
+  --glow-mid:    #f7a63f;
+  --glow-hot:    232, 145, 46;
+  --glow-deep:   110, 55, 10;
+  --title-ink:   #fff2dc;
+  --book:        #f2d43c;
+  --book-rgb:    242, 212, 60;
+}
+
+/* --- Gish: Smashing Pumpkins (1991). Dusty mauve, silver, plum ----- */
+html[data-theme="gish"] {
+  --bg:         #120b12;
+  --panel:      #1a111b;
+  --panel-alt:  #231825;
+  --pink:       #c9879f;
+  --purple:     #6b4a68;
+  --green:      #a89bb0;
+  --rust:       #a06a72;
+  --cream:      #e8dce2;
+  --text:       #ddd2da;
+  --text-dim:   #8d8090;
+  --border:     #2b1e2d;
+  --link:       #dda0b8;
+  --accent-rgb:  201, 135, 159;
+  --accent2-rgb: 107, 74, 104;
+  --accent2:     #a89bb0;
+  --accent2-hi:  #ded4e4;
+  --glow-pale:   #ffe4ee;
+  --glow-mid:    #dda0b8;
+  --glow-hot:    201, 135, 159;
+  --glow-deep:   90, 45, 70;
+  --title-ink:   #f8ecf2;
+  --book:        #a89bb0;
+  --book-rgb:    168, 155, 176;
+}
+
+/* --- Houdini: Melvins (1993). Red, yellow, blue and brown on black --- */
+html[data-theme="houdini"] {
+  --bg:         #0a0708;
+  --panel:      #120e0c;
+  --panel-alt:  #1a1512;
+  --pink:       #d0342c;
+  --purple:     #2f5fa8;
+  --green:      #e8c02a;
+  --rust:       #8a5a32;
+  --cream:      #e8d9c0;
+  --text:       #ddd2c4;
+  --text-dim:   #8b8073;
+  --border:     #241d18;
+  --link:       #ef5a4a;
+  --accent-rgb:  208, 52, 44;
+  --accent2-rgb: 47, 95, 168;
+  --accent2:     #e8c02a;
+  --accent2-hi:  #f7de84;
+  --glow-pale:   #ffd8c8;
+  --glow-mid:    #ef5a4a;
+  --glow-hot:    208, 52, 44;
+  --glow-deep:   95, 18, 14;
+  --title-ink:   #f7ece0;
+  --book:        #e8c02a;
+  --book-rgb:    232, 192, 42;
+}
+
+/* --- Master of Reality: Black Sabbath (1971). Hot pink and acid green
+   as equal partners on black, the way the two lines of type read. --- */
+html[data-theme="masterofreality"] {
+  --bg:         #050605;
+  --panel:      #0c0d0b;
+  --panel-alt:  #141610;
+  --pink:       #ef4d9c;
+  --purple:     #8a2f6a;
+  --green:      #c4e84a;
+  --rust:       #a03a70;
+  --cream:      #e6ecd2;
+  --text:       #d5dcc6;
+  --text-dim:   #85886f;
+  --border:     #23261c;
+  --link:       #ff6fb0;
+  --accent-rgb:  239, 77, 156;
+  --accent2-rgb: 196, 232, 74;
+  --accent2:     #c4e84a;
+  --accent2-hi:  #e4f78e;
+  --glow-pale:   #ffd6ea;
+  --glow-mid:    #ff6fb0;
+  --glow-hot:    239, 77, 156;
+  --glow-deep:   110, 15, 65;
+  --title-ink:   #ffe8f4;
+  --book:        #c4e84a;
+  --book-rgb:    196, 232, 74;
+}
+
+/* --- Badmotorfinger: Soundgarden (1991). Crimson, gold, silver ----- */
+html[data-theme="badmotorfinger"] {
+  --bg:         #0a0708;
+  --panel:      #120c0e;
+  --panel-alt:  #1a1214;
+  --pink:       #c4143c;
+  --purple:     #6b5a2e;
+  --green:      #c8a951;
+  --rust:       #8f2a1c;
+  --cream:      #ddd6cc;
+  --text:       #d5cdc8;
+  --text-dim:   #877c78;
+  --border:     #241a1c;
+  --link:       #e6394f;
+  --accent-rgb:  196, 20, 60;
+  --accent2-rgb: 107, 90, 46;
+  --accent2:     #c8a951;
+  --accent2-hi:  #eddba0;
+  --glow-pale:   #ffd0d8;
+  --glow-mid:    #e6394f;
+  --glow-hot:    196, 20, 60;
+  --glow-deep:   88, 6, 26;
+  --title-ink:   #f6ecea;
+  --book:        #c8a951;
+  --book-rgb:    200, 169, 81;
+}
+
+/* --- In Utero: Nirvana (1993). Butter cream, dusty anatomical red -- */
+html[data-theme="utero"] {
+  --bg:         #12100a;
+  --panel:      #1b1810;
+  --panel-alt:  #242016;
+  --pink:       #c05d52;
+  --purple:     #7a5a3a;
+  --green:      #c9b47a;
+  --rust:       #a04a38;
+  --cream:      #f0e0b0;
+  --text:       #e0d4b8;
+  --text-dim:   #8f8368;
+  --border:     #2c2718;
+  --link:       #d97b72;
+  --accent-rgb:  192, 93, 82;
+  --accent2-rgb: 122, 90, 58;
+  --accent2:     #f0e0b0;
+  --accent2-hi:  #fbf0d2;
+  --glow-pale:   #ffe8d0;
+  --glow-mid:    #d97b72;
+  --glow-hot:    192, 93, 82;
+  --glow-deep:   90, 35, 30;
+  --title-ink:   #f8eed4;
+  --book:        #f0e0b0;
+  --book-rgb:    240, 224, 176;
+}
+
+/* --- Rust in Peace: Megadeth (1990). Royal blue, gold, toxic green - */
+html[data-theme="rustinpeace"] {
+  --bg:         #060c1c;
+  --panel:      #0c1428;
+  --panel-alt:  #121d36;
+  --pink:       #e0a92e;
+  --purple:     #2b4b9b;
+  --green:      #7fd63a;
+  --rust:       #b06a1c;
+  --cream:      #dfe6f5;
+  --text:       #cdd8ee;
+  --text-dim:   #7386a8;
+  --border:     #1a2745;
+  --link:       #f0c455;
+  --accent-rgb:  224, 169, 46;
+  --accent2-rgb: 43, 75, 155;
+  --accent2:     #7fd63a;
+  --accent2-hi:  #c2f28e;
+  --glow-pale:   #fff0c8;
+  --glow-mid:    #f0c455;
+  --glow-hot:    224, 169, 46;
+  --glow-deep:   110, 70, 10;
+  --title-ink:   #fff6dd;
+  --book:        #7fd63a;
+  --book-rgb:    127, 214, 58;
+}
+
+/* --- Evil Empire: Rage Against the Machine (1996). Mustard, red ---- */
+html[data-theme="evilempire"] {
+  --bg:         #14100a;
+  --panel:      #1e1810;
+  --panel-alt:  #282016;
+  --pink:       #d13a2e;
+  --purple:     #8a5a1c;
+  --green:      #e8b423;
+  --rust:       #c05a1c;
+  --cream:      #f0dca8;
+  --text:       #e2d5b4;
+  --text-dim:   #8f8161;
+  --border:     #302716;
+  --link:       #ef6a3c;
+  --accent-rgb:  209, 58, 46;
+  --accent2-rgb: 138, 90, 28;
+  --accent2:     #e8b423;
+  --accent2-hi:  #f7d777;
+  --glow-pale:   #ffd9b8;
+  --glow-mid:    #ef6a3c;
+  --glow-hot:    209, 58, 46;
+  --glow-deep:   100, 25, 18;
+  --title-ink:   #ffe9c4;
+  --book:        #e8b423;
+  --book-rgb:    232, 180, 35;
+}
+
+/* --- Foo: Foo Fighters (1995). Slate navy, warm taupe, red script --- */
+html[data-theme="foo"] {
+  --bg:         #151d29;
+  --panel:      #1b2532;
+  --panel-alt:  #222d3c;
+  --pink:       #c8102e;   /* the red logo script */
+  --purple:     #5b6b7a;
+  --green:      #9d8f81;
+  --rust:       #a8321f;
+  --cream:      #cfc3b3;
+  --text:       #d3cec6;
+  --text-dim:   #8590a0;
+  --border:     #2c3849;
+  --link:       #e04250;
+  --accent-rgb:  200, 16, 46;
+  --accent2-rgb: 157, 143, 129;
+  --accent2:     #b3a493;
+  --accent2-hi:  #ddd0bf;
+  --glow-pale:   #ffd2cf;
+  --glow-mid:    #e04250;
+  --glow-hot:    200, 16, 46;
+  --glow-deep:   92, 8, 22;
+  --title-ink:   #f2ece3;
+  --book:        #b3a493;
+  --book-rgb:    179, 164, 147;
+}
+
+/* --- Dirt: Alice in Chains (1992). Scorched orange over black ------- */
+html[data-theme="dirt"] {
+  --bg:         #100905;
+  --panel:      #180e07;
+  --panel-alt:  #21140a;
+  --pink:       #d2551f;   /* the burnt desert orange */
+  --purple:     #8a2b0f;
+  --green:      #b8862c;
+  --rust:       #a8360f;
+  --cream:      #e8c9a0;
+  --text:       #dcc6ad;
+  --text-dim:   #8d7460;
+  --border:     #2d1c10;
+  --link:       #ef8a3c;
+  --accent-rgb:  210, 85, 31;
+  --accent2-rgb: 138, 43, 15;
+  --accent2:     #e07a2e;
+  --accent2-hi:  #f7bd7a;
+  --glow-pale:   #ffe0b8;
+  --glow-mid:    #ef8a3c;
+  --glow-hot:    210, 85, 31;
+  --glow-deep:   110, 30, 8;
+  --title-ink:   #fff0d8;
+  --book:        #e8a33c;
+  --book-rgb:    232, 163, 60;
+}
+
+/* --- Core: Stone Temple Pilots (1992). Scarlet, gold, deep green ---- */
+html[data-theme="core"] {
+  --bg:         #0b0806;
+  --panel:      #130d09;
+  --panel-alt:  #1c130d;
+  --pink:       #e63329;   /* the scarlet sky */
+  --purple:     #7a1a14;
+  --green:      #2e7d4f;   /* the little green block behind TEMPLE */
+  --rust:       #c0281f;
+  --cream:      #efe2c8;
+  --text:       #e3d8c4;
+  --text-dim:   #8f8271;
+  --border:     #2a1d15;
+  --link:       #f0c437;
+  --accent-rgb:  230, 51, 41;
+  --accent2-rgb: 122, 26, 20;
+  --accent2:     #f0c437;   /* gold as the secondary accent */
+  --accent2-hi:  #ffe07a;
+  --glow-pale:   #ffd9c4;
+  --glow-mid:    #f0553f;
+  --glow-hot:    230, 51, 41;
+  --glow-deep:   105, 14, 10;
+  --title-ink:   #f7c93f;
+  --book:        #f0c437;
+  --book-rgb:    240, 196, 55;
+}
+
+/* ---------- Theme switcher UI (temporary) ---------------- */
+
+.theme-toggle {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 20px;
+  position: relative;
+  top: -1px;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--text-dim);
+  background:
+    radial-gradient(circle at 50% 50%,
+      var(--text-dim) 0 1.6px,
+      transparent 1.7px 4px,
+      var(--text-dim) 4.1px 4.9px,
+      transparent 5px);
+  opacity: 0.26;
+  cursor: pointer;
+  transition: opacity 0.25s, border-color 0.25s, transform 0.5s;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  opacity: 0.95;
+  border-color: var(--pink);
+  transform: rotate(180deg);
+}
+
+.theme-panel {
+  position: fixed;
+  top: 54px;
+  right: 14px;
+  z-index: 9998;
+  width: 210px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--pink);
+  padding: 12px;
+  display: none;
+}
+
+.theme-panel.open { display: block; }
+
+.theme-panel h4 {
+  margin: 0 0 4px;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+}
+
+.theme-panel .theme-note {
+  margin: 0 0 10px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+
+.theme-opt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 8px;
+  margin-bottom: 4px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.theme-opt:hover { border-color: var(--pink); color: #fff; }
+.theme-opt.active { border-color: var(--pink); color: #fff; background: rgba(var(--accent-rgb), 0.12); }
+
+.theme-swatch {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(90deg, var(--sw1) 0 33%, var(--sw2) 33% 66%, var(--sw3) 66% 100%);
+}
+
+/* ---------- Grunge sigil: burned-in inverted triangle ----------
+   The Ring's ring, swapped for the band's upside-down triangle: a rough
+   stroked outline blown out white, blooming into the dark, with the tube's
+   own static crawling over it. Grunge theme only. */
+
+.hero-sigil-wrap {
+  position: absolute;
+  left: 50%;
+  /* top is set by js/script.js to the wordmark's centre, since hero padding
+     differs per page and a fixed offset lands the triangle off the title */
+  transform: translate(-50%, -50%);
+  width: 340px;
+  height: 340px;
+  z-index: 1;
+  pointer-events: none;
+  display: none;
+  opacity: 0.55;
+}
+
+.hero-sigil {
+  position: absolute;
+  inset: 0;
+  background-color: #f2ece0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  /* hand-drawn, uneven stroke rather than a clean geometric triangle */
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><path d='M18 34 C60 30, 142 29, 183 33 C176 52, 120 150, 101 175 C96 178, 92 176, 88 170 C68 140, 30 62, 18 34 Z M28 44 C44 74, 74 132, 96 163 C100 168, 102 167, 105 162 C126 130, 156 70, 172 43 C132 39, 66 40, 28 44 Z' fill='white' fill-rule='evenodd'/></svg>");
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><path d='M18 34 C60 30, 142 29, 183 33 C176 52, 120 150, 101 175 C96 178, 92 176, 88 170 C68 140, 30 62, 18 34 Z M28 44 C44 74, 74 132, 96 163 C100 168, 102 167, 105 162 C126 130, 156 70, 172 43 C132 39, 66 40, 28 44 Z' fill='white' fill-rule='evenodd'/></svg>");
+  /* same --bloom token and same animation as .hero-title, so the triangle
+     and the wordmark strike and dip on exactly the same beat */
+  --bloom:
+    blur(0.7px)
+    drop-shadow(0 0 6px rgba(255, 252, 245, 0.9))
+    drop-shadow(0 0 22px rgba(240, 232, 218, 0.55))
+    drop-shadow(0 0 60px rgba(214, 202, 182, 0.35));
+  filter: var(--bloom);
+  animation: sign-flicker 7s linear infinite;
+}
+
+html[data-effect="sigil"] .hero-sigil-wrap { display: block; }
+
+/* the wordmark reads as bone-white burned into the tube, not a lit sign */
+html[data-effect="sigil"] .hero-title {
+  color: #f4efe4;
+  text-shadow:
+    0 0 1px #fff,
+    0 0 7px rgba(255, 250, 240, 0.75),
+    0 0 18px rgba(230, 220, 202, 0.4);
+  --bloom:
+    drop-shadow(0 0 8px rgba(255, 250, 240, 0.7))
+    drop-shadow(0 0 26px rgba(220, 208, 188, 0.4))
+    drop-shadow(0 0 70px rgba(150, 138, 120, 0.3));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sigil { animation: none; }
+}
+
+@media (max-width: 640px) {
+  .hero-sigil-wrap { width: 230px; height: 230px; }
+}
+
+/* ---------- Two-column switcher panel ---------- */
+
+.theme-panel { width: 340px; }
+
+.theme-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.theme-col h4 {
+  margin: 0 0 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- Display font variants ---------- */
+html[data-font="stencilbold"] { --font-display: "Saira Stencil One", Arial, sans-serif; }
+html[data-font="typewriter"]  { --font-display: "Special Elite", Arial, serif; }
+html[data-font="oswald"]      { --font-display: "Oswald", Arial, sans-serif;           --display-weight: 300; }
+html[data-font="barlow"]      { --font-display: "Barlow Condensed", Arial, sans-serif; --display-weight: 200; }
+html[data-font="teko"]        { --font-display: "Teko", Arial, sans-serif;             --display-weight: 300; }
+html[data-font="josefin"]     { --font-display: "Josefin Sans", Arial, sans-serif;     --display-weight: 300; }
+html[data-font="chakra"]      { --font-display: "Chakra Petch", Arial, sans-serif;     --display-weight: 300; }
+
+/* Rock Salt runs very wide and Bangers very tall, so the two headline sizes
+   get nudged per face. Sizes are provisional until a face is chosen. */
+
+/* per-face size correction */
+html[data-font="typewriter"]  { --title-scale: 0.82; }
+html[data-font="stencil"]     { --title-scale: 1.02; }
+
+/* section-page and member-page headlines share the scale */
+.hero h1.hero-title-sm { font-size: calc(44px * var(--title-scale, 1)); }
+html[data-font="stencil"] .section-title { font-size: 29px; }
+html[data-font="josefin"] .section-title { font-size: 32px; letter-spacing: 1.5px; }
+html[data-font="chakra"] .section-title  { font-size: 31px; letter-spacing: 1px; }
+html[data-font="typewriter"] .section-title { font-size: 24px; }
+
+/* ---------- Three-column switcher panel ---------- */
+.theme-panel { width: 330px; }
+.theme-cols { grid-template-columns: 1fr 1fr; gap: 12px; }
+.theme-opt { font-size: 10px; padding: 6px 7px; gap: 7px; }
+.theme-swatch { width: 26px; height: 12px; }
+
+/* ---------- Title-only faces ----------
+   These drive the wordmark and page headlines only. Left unset, the title
+   follows whatever --font-display is. Scale rules sit after the data-font
+   ones so an explicit title face wins the sizing. */
+html[data-title="burned"]     { --font-title: "Rubik Burned", Arial, sans-serif; }
+html[data-title="glitch"]     { --font-title: "Rubik Glitch", Arial, sans-serif; }
+html[data-title="moonrocks"]  { --font-title: "Rubik Moonrocks", Arial, sans-serif; }
+html[data-title="vinyl"]      { --font-title: "Rubik Vinyl", Arial, sans-serif; }
+html[data-title="distressed"] { --font-title: "Rubik Distressed", Arial, sans-serif; }
+html[data-title="spray"]      { --font-title: "Rubik Spray Paint", Arial, sans-serif; }
+html[data-title="wetpaint"]   { --font-title: "Rubik Wet Paint", Arial, sans-serif; }
+html[data-title="beastly"]    { --font-title: "Rubik Beastly", Arial, sans-serif; }
+html[data-title="lacquer"]    { --font-title: "Lacquer", Arial, sans-serif; }
+html[data-title="puddles"]    { --font-title: "Rubik Puddles", Arial, sans-serif; }
+html[data-title="bubbles"]    { --font-title: "Rubik Bubbles", Arial, sans-serif; }
+html[data-title="shrikhand"]  { --font-title: "Shrikhand", Arial, sans-serif; }
+html[data-title="yellowtail"] { --font-title: "Yellowtail", cursive; }
+html[data-title="anton"]      { --font-title: "Anton", Impact, sans-serif; }
+html[data-title="archivo"]    { --font-title: "Archivo Black", Impact, sans-serif; }
+
+html[data-title="burned"]      { --title-scale: 0.94; }
+html[data-title="glitch"]      { --title-scale: 0.9; }
+html[data-title="moonrocks"]   { --title-scale: 0.94; }
+html[data-title="vinyl"]       { --title-scale: 0.94; }
+html[data-title="distressed"]  { --title-scale: 1; }
+html[data-title="spray"]       { --title-scale: 0.86; }
+html[data-title="wetpaint"]    { --title-scale: 0.9; }
+html[data-title="beastly"]     { --title-scale: 0.88; }
+html[data-title="lacquer"]     { --title-scale: 1; }
+html[data-title="puddles"]     { --title-scale: 0.96; }
+html[data-title="bubbles"]     { --title-scale: 0.94; }
+html[data-title="shrikhand"]   { --title-scale: 0.92; }
+html[data-title="yellowtail"]  { --title-scale: 1.08; }
+html[data-title="anton"]       { --title-scale: 1.04; }
+html[data-title="archivo"]     { --title-scale: 0.92; }
+
+/* ---------- Sleeve picker ----------
+   Abstract palette tiles, NOT reproductions of the album artwork: each is
+   built from its theme's own colours in a composition that nods at the
+   record. Hovering shows the name. */
+
+.theme-panel { width: 268px; }
+
+.sleeve-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.sleeve {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  overflow: hidden;
+  background: #000;
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.sleeve:hover { transform: scale(1.08); border-color: var(--pink); z-index: 2; }
+.sleeve.active { border-color: var(--pink); box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.45); }
+
+.sleeve span {
+  position: absolute;
+  inset: auto 0 0 0;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.72);
+  padding: 2px 1px;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.sleeve:hover span, .sleeve.active span { opacity: 1; }
+
+/* --- the tiles ------------------------------------------------------ */
+.sv-foo {
+  background:
+    linear-gradient(90deg, transparent 40%, #c8102e 40% 60%, transparent 60%),
+    radial-gradient(circle at 30% 30%, #9d8f81 16%, transparent 17%),
+    radial-gradient(circle at 70% 68%, #9d8f81 20%, transparent 21%),
+    #24303f;
+}
+.sv-dirt {
+  background: linear-gradient(180deg, #d2551f 0%, #8a2b0f 55%, #100905 100%);
+}
+.sv-core {
+  background:
+    linear-gradient(180deg, #e63329 0%, #e63329 55%, #0b0806 55%),
+    #0b0806;
+  box-shadow: inset 0 -6px 0 -2px #f0c437;
+}
+.sv-houdini {
+  background:
+    linear-gradient(90deg, #d0342c 0 25%, #e8c02a 25% 50%, #2f5fa8 50% 75%, #8a5a32 75% 100%);
+  background-size: 100% 46%;
+  background-repeat: no-repeat;
+  background-position: 0 30%;
+  background-color: #0a0708;
+}
+.sv-masterofreality {
+  background:
+    linear-gradient(180deg, transparent 14%, #ef4d9c 14% 40%, transparent 40%),
+    linear-gradient(180deg, transparent 46%, #c4e84a 46% 86%, transparent 86%),
+    #050605;
+  background-size: 76% 100%, 84% 100%, 100% 100%;
+  background-position: 50% 0, 50% 0, 0 0;
+  background-repeat: no-repeat;
+}
+.sv-badmotorfinger {
+  background:
+    radial-gradient(circle at 50% 50%, #c8a951 26%, transparent 27%),
+    radial-gradient(circle at 50% 50%, #c4143c 40%, transparent 41%),
+    linear-gradient(120deg, #4a4a4a, #0a0708);
+}
+.sv-utero {
+  background:
+    radial-gradient(ellipse 22% 40% at 50% 52%, #c05d52 70%, transparent 71%),
+    #f0e0b0;
+}
+.sv-rustinpeace {
+  background:
+    radial-gradient(circle at 62% 38%, #7fd63a 14%, transparent 15%),
+    linear-gradient(180deg, #2b4b9b 0%, #060c1c 100%);
+  box-shadow: inset 0 7px 0 -2px #e0a92e;
+}
+.sv-evilempire {
+  background:
+    linear-gradient(135deg, transparent 44%, #e8912e 44% 56%, transparent 56%),
+    radial-gradient(ellipse 26% 34% at 50% 62%, #d13a2e 70%, transparent 71%),
+    #e8b423;
+}
+.sv-poison {
+  background:
+    radial-gradient(circle at 37% 54%, #7fd63a 7%, transparent 8%),
+    radial-gradient(circle at 63% 54%, #7fd63a 7%, transparent 8%),
+    linear-gradient(180deg, #b8e02a 0 15%, transparent 15%),
+    radial-gradient(ellipse 38% 44% at 50% 60%, #d92b1f 74%, transparent 75%),
+    linear-gradient(160deg, #ff7a1f, #b8300c);
+}
+.sv-powerage {
+  background:
+    linear-gradient(180deg, transparent 52%, #f2d43c 52% 60%, transparent 60%),
+    radial-gradient(ellipse 34% 48% at 50% 46%, #e8912e 55%, transparent 70%),
+    #080705;
+}
+.sv-gish {
+  background:
+    radial-gradient(circle at 50% 46%, #a89bb0 22%, transparent 23%),
+    radial-gradient(circle at 50% 46%, #c9879f 34%, transparent 35%),
+    linear-gradient(160deg, #6b4a68, #120b12);
+}
+
+/* fallback position if a page has no nav to sit in */
+.theme-toggle-floating {
+  position: fixed;
+  top: 15px;
+  right: 16px;
+  margin-left: 0;
+  z-index: 9998;
+}
+
