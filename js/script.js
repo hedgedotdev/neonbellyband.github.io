@@ -71,6 +71,32 @@
         [".block-section:nth-of-type(3) > p:last-child", '<a href="blog.html">&raquo; Lee todas las notas</a>']
       ]
     },
+    fans: {
+      title: "Neon Belly | Fans",
+      titleText: [[".hero-title-sm", "Fans"]],
+      text: [
+        [".home-hero-copy .tagline", "Para quienes mantienen viva la música en vivo."],
+        [".fan-kicker", "Para la gente que aparece"],
+        [".fan-letter .section-title", "Gracias"],
+        [".fan-letter p:nth-of-type(2)", "Todas las bandas dicen que aman al público, y probablemente todas lo dicen en serio. Pero para nosotros es difícil explicar lo que se siente cuando la gente decide regalar una parte de su noche a una sala con música en vivo. Podrías estar en cualquier otro lugar. Podrías estar en casa, pasando la pantalla, viendo algo, esperando que la semana por fin afloje. En cambio, entras a un bar, te paras cerca de los amplificadores y ayudas a que el cuarto cobre vida."],
+        [".fan-letter p:nth-of-type(3)", "Eso importa. Nos importa a nosotros. Les importa a los locales que todavía abren espacio para guitarras fuertes y baterías reales. Les importa a los bartenders, a la gente de sonido, a los amigos que arrastran a otros amigos, y a cada persona que todavía cree que una canción pega distinto cuando está pasando a tres metros de ti."],
+        [".fan-letter p:nth-of-type(4)", "Tocamos la música que vivía en tu carro, tu morral, tu primer apartamento, tus CDs quemados y esas carpetas que cuidabas como un tesoro. Las canciones que encontrabas en Napster o LimeWire, mal nombradas, bajando lento, ordenadas con paciencia, y que decidías que valían lo suficiente como para grabarlas en un disco. Después manejabas con ellas, ventanas abajo, sin mucho plan y sin mucha preocupación, solo con una lista de canciones que sentías tuyas."],
+        [".fan-letter p:nth-of-type(5)", "Ese es el sentimiento que buscamos. No la nostalgia como disfraz, ni una copia perfecta de museo. Queremos agarrar la chispa de esas canciones favoritas: el primer riff que hace que todo el mundo levante la mirada, el coro que la sala ya se sabe, la parte pesada que todavía te baja los hombros y te mueve la cabeza antes de pensarlo."],
+        [".fan-social-copy .section-title", "Redes Sociales, Por Qué Ayudan"],
+        [".fan-social-copy p", "La música en vivo también se mueve por números. Cada follow, cada vez que compartes algo, cada comentario y cada video nos da algo real para mostrarle al próximo local: la gente está pendiente, y vale la pena abrir espacio para noches como esta."],
+        [".fan-action:nth-of-type(1) .section-title", "Propinas"],
+        [".fan-venmo-copy", "Si quieres aportar algo para ❤️, cuerdas, baquetas, equipo, glow sticks y la próxima noche ruidosa, esto va directo a la banda."],
+        [".fan-venmo-link", "Apoya a Neon Belly en Venmo"],
+        [".fan-action:nth-of-type(2) .section-title", "Merch"],
+        [".fan-action:nth-of-type(2) .fan-disabled", "Camisas pronto"],
+        [".fan-photos .section-title", "Desde La Sala"],
+        [".fan-photos .section-sub", "Fotos de shows, amigos y noches que vale la pena recordar."]
+      ],
+      html: [
+        [".fan-letter p:nth-of-type(6)", 'Así que si has aplaudido, gritado, cantado con nosotros, le has contado a un amigo, nos has seguido, publicado un video, pedido una canción, comprado una camisa, dejado una propina para la banda o simplemente te has quedado sonriendo mientras descubrimos en qué nos estamos convirtiendo... <span class="fan-closing"><span class="fan-thank-you">¡GRACIAS!</span> <span class="fan-closing-line">Tú no eres algo extra en esto; <span class="fan-sentence">¡<span class="fan-you">TÚ</span> eres la razón por la que tocamos <span class="fan-your">tus</span> canciones!</span></span></span>'],
+        [".fan-merch-copy", 'Mandamos a hacer unas 40 franelas al principio, y ya se fueron. Estamos trabajando en un rediseño y vamos a imprimir más pronto. La idea es venderlas en $20, y nos ayuda saber qué tallas y modelos está buscando la gente. Escríbenos a <a href="mailto:neonbellyTN@gmail.com">neonbellyTN@gmail.com</a> o usa el formulario de abajo cuando esté listo; haremos lo posible por acomodarte y avisarte cuando lleguen. Si ya sabes que quieres una, puedes enviarnos por <a href="https://account.venmo.com/u/neonbelly_band" target="_blank" rel="noopener">Venmo</a> y dejar una nota con tu talla o estilo preferido. Y si te gustaría otro tipo de merch, también dinos. Las franelas son cool, pero tal vez tú tienes una mejor idea ;)']
+      ]
+    },
     shows: {
       title: "Neon Belly | Fechas",
       titleText: [[".hero-title-sm", "Fechas"]],
@@ -288,6 +314,7 @@
 
     setText('.main-nav a[href$="index.html"]', "Inicio");
     setText('.main-nav a[href$="shows.html"]', "Fechas");
+    setText('.main-nav a[href$="fans.html"]', "Fans");
     setText('.main-nav a[href$="blog.html"]', "Blog");
     setText('.main-nav a[href$="about.html"]', "La Banda");
     setText('.main-nav a[href$="booking.html"]', "Contratar");
