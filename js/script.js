@@ -364,7 +364,7 @@
   }
 
   var items = imgs.map(function (img) {
-    return { src: img.currentSrc || img.src, alt: img.alt || "", title: titleFor(img) };
+    return { src: img.getAttribute("data-full-src") || img.currentSrc || img.src, alt: img.alt || "", title: titleFor(img) };
   });
 
   var overlay = document.createElement("div");

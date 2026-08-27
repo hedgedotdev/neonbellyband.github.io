@@ -68,7 +68,11 @@ body::before {
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-img { max-width: 100%; display: block; }
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 
 .visually-hidden {
   position: absolute;
@@ -316,12 +320,10 @@ nav.main-nav a.current {
 
 .home-hero-media {
   position: relative;
-  z-index: 1;
   min-height: 236px;
   background: #000;
   border-bottom: 3px solid var(--pink);
   overflow: hidden;
-  isolation: isolate;
 }
 
 .home-hero-media::after {
@@ -1274,7 +1276,13 @@ a.show-row-link.venue:hover {
 
 .poster-card:hover { border-color: var(--pink); }
 
-.poster-card img { margin: 0 auto 10px; }
+.poster-card img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto 10px;
+}
+
+.poster-fill img { margin-bottom: 0; }
 
 .poster-card .show-venue {
   font-family: "Archivo Black", Arial, sans-serif;
