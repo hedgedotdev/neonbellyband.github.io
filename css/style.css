@@ -178,6 +178,39 @@ nav.main-nav a.current {
   text-decoration: none;
 }
 
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 9px 3px;
+  border: 1px solid rgba(var(--accent-rgb), 0.55);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.42);
+  color: var(--text);
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.2);
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.lang-toggle:hover,
+.lang-toggle:focus-visible {
+  color: var(--book);
+  border-color: var(--book);
+  box-shadow: 0 0 16px rgba(var(--book-rgb), 0.35);
+  transform: translateY(-1px);
+}
+
+html[data-lang="es"] .lang-toggle {
+  color: var(--book);
+  border-color: rgba(var(--book-rgb), 0.75);
+}
+
 .home-page .nav-row {
   justify-content: space-between;
   min-height: 58px;
@@ -233,6 +266,12 @@ nav.main-nav a.current {
     width: 100%;
     justify-content: center;
     gap: 8px 14px;
+  }
+
+  .lang-toggle {
+    min-height: 26px;
+    padding: 4px 8px 3px;
+    font-size: 10px;
   }
 
   .home-page .nav-row {
