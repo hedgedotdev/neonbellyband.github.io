@@ -264,6 +264,7 @@
   var K_THEME = "neonbelly-theme";
   var K_FONT  = "neonbelly-font";
   var K_TITLE = "neonbelly-title";
+  var K_SESSION = "neonbelly-session-theme";
   var DEFAULT_ID = "utero";
 
   var SETS = [
@@ -288,6 +289,8 @@
 
   function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function sstore(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+  function sread(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
 
   function applySet(set) {
     attr("data-theme", set.id);
@@ -306,8 +309,23 @@
     return null;
   }
 
-  // In Utero is the default; a visitor's pick persists from then on
-  var current = find(read(K_THEME)) || find(DEFAULT_ID) || SETS[0];
+  // An explicit pick (from the switcher) persists across visits via
+  // localStorage. Absent that, a random sleeve is chosen once per browser
+  // session (sessionStorage) so it stays put across pages but reshuffles
+  // on the next fresh visit instead of always opening on In Utero.
+  function randomSet() {
+    return SETS[Math.floor(Math.random() * SETS.length)];
+  }
+
+  var current = find(read(K_THEME));
+  if (!current) {
+    current = find(sread(K_SESSION));
+    if (!current) {
+      current = randomSet();
+      sstore(K_SESSION, current.id);
+    }
+  }
+  current = current || find(DEFAULT_ID) || SETS[0];
   attr("data-theme", current.id);
   attr("data-font", current.font);
   attr("data-title", current.title);

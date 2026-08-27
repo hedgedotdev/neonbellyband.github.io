@@ -345,6 +345,10 @@ nav.main-nav a.current {
   object-position: center;
 }
 
+/* Transparent PNG mask (white shape, alpha = artwork coverage) instead of
+   a flat raster image, so the logo tints to the active theme's accent
+   colour via background-color rather than being baked-in red, and sits
+   directly on the photo with no backing box. */
 .home-hero-logo {
   position: absolute;
   z-index: 6;
@@ -353,16 +357,25 @@ nav.main-nav a.current {
   width: clamp(118px, 14vw, 180px);
   height: auto;
   aspect-ratio: 1;
-  object-fit: cover;
-  background: #000;
-  border: 1px solid rgba(var(--accent-rgb), 0.78);
-  border-radius: 6px;
-  box-shadow:
-    0 0 18px rgba(var(--accent-rgb), 0.52),
-    0 0 42px rgba(var(--accent2-rgb), 0.26),
-    inset 0 0 18px rgba(0, 0, 0, 0.9);
+  background-color: var(--pink);
+  -webkit-mask-image: url("../images/neon-belly-logo-mask.png");
+  mask-image: url("../images/neon-belly-logo-mask.png");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  /* same uneven-mains flicker as the wordmark (.hero-title's sign-flicker
+     keyframe reads this custom property), so the two read as one sign */
+  --bloom:
+    drop-shadow(0 0 14px rgba(var(--accent-rgb), 0.95))
+    drop-shadow(0 0 34px rgba(var(--accent-rgb), 0.8))
+    drop-shadow(0 0 64px rgba(var(--accent2-rgb), 0.55))
+    drop-shadow(0 0 105px rgba(var(--accent2-rgb), 0.32));
+  filter: var(--bloom);
   transform-origin: 50% 54%;
-  animation: hero-logo-drift 7.2s ease-in-out infinite, hero-logo-glow 4.8s ease-in-out infinite;
+  animation: hero-logo-drift 7.2s ease-in-out infinite, sign-flicker 7s linear infinite;
 }
 
 @keyframes hero-logo-drift {
@@ -370,23 +383,6 @@ nav.main-nav a.current {
   24%      { transform: translate(-1px, 0.5px) rotate(-0.35deg); }
   48%      { transform: translate(0.5px, -0.5px) rotate(0.25deg); }
   72%      { transform: translate(1px, 0.5px) rotate(-0.15deg); }
-}
-
-@keyframes hero-logo-glow {
-  0%, 100% {
-    filter: brightness(1);
-    box-shadow:
-      0 0 18px rgba(var(--accent-rgb), 0.52),
-      0 0 42px rgba(var(--accent2-rgb), 0.26),
-      inset 0 0 18px rgba(0, 0, 0, 0.9);
-  }
-  50% {
-    filter: brightness(1.12);
-    box-shadow:
-      0 0 24px rgba(var(--accent-rgb), 0.68),
-      0 0 58px rgba(var(--accent2-rgb), 0.34),
-      inset 0 0 18px rgba(0, 0, 0, 0.9);
-  }
 }
 
 .home-hero-copy {
@@ -402,19 +398,25 @@ nav.main-nav a.current {
   display: block;
 }
 
+/* Row 2 (the genre stamp row) sets the widest line in this block by
+   nature of its 30px glowing type; scale rows 1 and 3 up to roughly the
+   same measured width instead of leaving them narrower and small. */
+.tagline-main { font-size: 26px; }
+.tagline-location { font-size: 31px; }
+
 .party-band-callout {
   display: inline-block;
   margin-right: 7px;
-  font-family: "Lacquer", var(--font-display);
+  font-family: var(--font-display);
   font-size: 1.34em;
   line-height: 0.95;
-  color: #ffd400;
+  color: var(--pink);
   text-transform: uppercase;
   letter-spacing: 0.4px;
   text-shadow:
     0 0 1px rgba(255, 255, 255, 0.75),
-    0 0 6px rgba(255, 212, 0, 0.68),
-    0 0 12px rgba(255, 60, 40, 0.34),
+    0 0 6px rgba(var(--accent-rgb), 0.68),
+    0 0 12px rgba(var(--accent2-rgb), 0.34),
     2px 2px 0 rgba(0, 0, 0, 0.92);
   transform: rotate(-2deg) translateY(2px);
 }
@@ -718,14 +720,31 @@ nav.main-nav a.current {
   gap: 10px 12px;
 }
 
-.follow-sticker {
-  --sticker-yellow: #ffd400;
-  --follow-rotate: -3deg;
+/* the actual centred group; .follow-sticker anchors to ITS edge (below)
+   rather than the row's, so it tracks the buttons instead of the page. */
+.cta-buttons {
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.follow-sticker {
+  --sticker-yellow: var(--pink);
+  --follow-rotate: -3deg;
+  /* sits just off the left edge of .cta-buttons, wherever centring puts
+     it, instead of pinned to the row's (much wider) left edge */
+  position: absolute;
+  right: 100%;
+  margin-right: 14px;
+  top: 50%;
+  margin-top: -19px;
   display: inline-flex;
   align-items: center;
   min-height: 35px;
   padding: 8px 16px 8px 18px;
+  white-space: nowrap;
   color: #08080a;
   background: var(--sticker-yellow);
   border: 1px solid rgba(255, 255, 255, 0.42);
@@ -737,7 +756,7 @@ nav.main-nav a.current {
   text-shadow: none;
   box-shadow:
     3px 3px 0 rgba(0, 0, 0, 0.78),
-    0 0 14px rgba(255, 212, 0, 0.48);
+    0 0 14px rgba(var(--accent-rgb), 0.48);
   transform: rotate(var(--follow-rotate));
   transform-origin: 50% 54%;
   animation: follow-sticker-drift 7.2s ease-in-out infinite, follow-sticker-glow 4.8s ease-in-out infinite;
@@ -753,7 +772,7 @@ nav.main-nav a.current {
   height: 15px;
   background: var(--sticker-yellow);
   clip-path: polygon(0 32%, 54% 32%, 54% 0, 100% 50%, 54% 100%, 54% 68%, 0 68%);
-  filter: drop-shadow(0 0 8px rgba(255, 212, 0, 0.72));
+  filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.72));
   transform: translateY(-50%);
 }
 
@@ -769,14 +788,14 @@ nav.main-nav a.current {
     filter: brightness(1);
     box-shadow:
       3px 3px 0 rgba(0, 0, 0, 0.78),
-      0 0 14px rgba(255, 212, 0, 0.48);
+      0 0 14px rgba(var(--accent-rgb), 0.48);
   }
   50% {
     filter: brightness(1.1);
     box-shadow:
       3px 3px 0 rgba(0, 0, 0, 0.78),
-      0 0 22px rgba(255, 212, 0, 0.68),
-      0 0 38px rgba(255, 60, 40, 0.22);
+      0 0 22px rgba(var(--accent-rgb), 0.68),
+      0 0 38px rgba(var(--accent2-rgb), 0.22);
   }
 }
 
@@ -813,6 +832,33 @@ nav.main-nav a.current {
   font-family: var(--font-display);
   font-size: 30px;
   line-height: 1.1;
+}
+
+/* connector between Grunge and Metal, so the row reads as one list ("Rock,
+   Grunge & Metal") instead of three unrelated stamps. Carries the same
+   neon glow/glitch as the genre words (via .hero-title) but stays small
+   and pulls in against .stamp-row's wide gap rather than standing as a
+   fourth stamp. */
+.genre-and {
+  align-self: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.1;
+  margin: 0 -20px;
+}
+
+/* plain surrounding words ("90s & 2000s" / "anthems") that turn the stamp
+   row into a full sentence around the glowing genre words. */
+.stamp-row-plain {
+  align-self: center;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.95),
+    -1px 1px 0 rgba(0, 0, 0, 0.95),
+    1px -1px 0 rgba(0, 0, 0, 0.95),
+    -1px -1px 0 rgba(0, 0, 0, 0.95);
 }
 
 /* Each word runs the shared title animations on its own duration, delay and
@@ -858,6 +904,18 @@ nav.main-nav a.current {
     font-size: 22px;
   }
 
+  .genre-and {
+    font-size: 16px;
+    margin: 0 -14px;
+  }
+
+  .stamp-row-plain {
+    font-size: 13px;
+  }
+
+  .tagline-main { font-size: 19px; }
+  .tagline-location { font-size: 22px; }
+
   .home-hero .cta-row {
     width: min(260px, calc(100vw - 32px));
     margin: 22px auto 0;
@@ -866,10 +924,19 @@ nav.main-nav a.current {
     gap: 11px;
   }
 
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 11px;
+  }
+
   .follow-sticker {
     --follow-rotate: -2deg;
-    align-self: flex-start;
+    /* back in normal flow: the mobile row stacks everything in a single
+       column, so there's no separate centred cluster to sit apart from */
+    position: static;
     margin: 0 0 1px;
+    align-self: flex-start;
     animation: follow-sticker-drift 8.4s ease-in-out infinite;
   }
 
@@ -1133,17 +1200,17 @@ section.block-section {
 }
 
 .shows-list .show-row:first-of-type {
-  --next-show: #ffd400;
+  --next-show: var(--pink);
   position: relative;
   padding: 20px 18px 18px 86px;
-  border: 1px solid rgba(255, 212, 0, 0.46);
+  border: 1px solid rgba(var(--accent-rgb), 0.46);
   border-left: 4px solid var(--next-show);
   background:
-    linear-gradient(90deg, rgba(255, 212, 0, 0.12), rgba(var(--accent-rgb), 0.07) 46%, rgba(0, 0, 0, 0.2)),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.12), rgba(var(--accent-rgb), 0.07) 46%, rgba(0, 0, 0, 0.2)),
     var(--panel-alt);
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.65),
-    0 0 28px rgba(255, 212, 0, 0.16);
+    0 0 28px rgba(var(--accent-rgb), 0.16);
 }
 
 .shows-list .show-row:first-of-type::before {
@@ -1156,8 +1223,8 @@ section.block-section {
   background: var(--next-show);
   clip-path: polygon(0 34%, 58% 34%, 58% 10%, 100% 50%, 58% 90%, 58% 66%, 0 66%);
   filter:
-    drop-shadow(0 0 5px rgba(255, 212, 0, 0.92))
-    drop-shadow(0 0 15px rgba(255, 212, 0, 0.46));
+    drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.92))
+    drop-shadow(0 0 15px rgba(var(--accent-rgb), 0.46));
   transform: translateY(-50%);
   animation: show-arrow-pulse 1.15s steps(2) infinite;
 }
@@ -1175,7 +1242,7 @@ section.block-section {
   line-height: 1;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.72), 0 0 14px rgba(255, 212, 0, 0.32);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.72), 0 0 14px rgba(var(--accent-rgb), 0.32);
   transform: rotate(-2deg);
 }
 
@@ -1205,7 +1272,7 @@ a.show-row-link.venue {
 }
 
 .shows-list .show-row:first-of-type a.show-row-link.venue {
-  border-bottom: 2px solid rgba(255, 212, 0, 0.64);
+  border-bottom: 2px solid rgba(var(--accent-rgb), 0.64);
 }
 
 a.show-row-link.venue::after {
@@ -1224,7 +1291,25 @@ a.show-row-link.venue:hover {
 .shows-list .show-row:first-of-type a.show-row-link.venue:hover {
   color: var(--next-show);
   border-bottom-color: var(--next-show);
-  text-shadow: 0 0 10px rgba(255, 212, 0, 0.5);
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+}
+
+.show-row .show-price {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--accent2-hi);
+  background: rgba(var(--accent2-rgb), 0.16);
+  border: 1px solid rgba(var(--accent2-rgb), 0.5);
+  padding: 3px 9px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.shows-list .show-row:first-of-type .show-price {
+  font-size: 13px;
+  padding: 4px 10px 5px;
 }
 
 .show-row .details { color: var(--text-dim); font-size: 13px; }
@@ -1243,10 +1328,10 @@ a.show-row-link.venue:hover {
   margin: 0 10px 0 0;
   padding: 4px 9px 5px;
   color: #08080a;
-  background: var(--next-show, #ffd400);
+  background: var(--next-show, var(--pink));
   border: 1px solid rgba(255, 255, 255, 0.38);
   box-shadow:
-    0 0 10px rgba(255, 212, 0, 0.5),
+    0 0 10px rgba(var(--accent-rgb), 0.5),
     2px 2px 0 rgba(0, 0, 0, 0.72);
   line-height: 1;
   white-space: nowrap;
@@ -1271,7 +1356,7 @@ a.show-row-link.venue:hover {
     border-left-width: 3px;
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.7),
-      0 0 20px rgba(255, 212, 0, 0.16);
+      0 0 20px rgba(var(--accent-rgb), 0.16);
   }
 
   .shows-list .show-row:first-of-type::before {
@@ -1305,15 +1390,22 @@ a.show-row-link.venue:hover {
     grid-row: 2;
     width: 100%;
     padding-bottom: 7px;
-    border-bottom: 2px solid rgba(255, 212, 0, 0.5);
+    border-bottom: 2px solid rgba(var(--accent-rgb), 0.5);
     font-size: 15px;
     line-height: 1.25;
     overflow-wrap: anywhere;
   }
 
-  .shows-list .show-row:first-of-type .details {
+  .shows-list .show-row:first-of-type .show-price {
     grid-column: 2;
     grid-row: 3;
+    justify-self: start;
+    margin: 2px 0 0;
+  }
+
+  .shows-list .show-row:first-of-type .details {
+    grid-column: 2;
+    grid-row: 4;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
