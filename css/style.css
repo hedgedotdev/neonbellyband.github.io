@@ -440,12 +440,13 @@ html[data-lang="es"] .lang-toggle {
 /* Row 2 (the genre stamp row) sets the widest line in this block by
    nature of its 30px glowing type; scale rows 1 and 3 up to roughly the
    same measured width instead of leaving them narrower and small. */
-.tagline-main { font-size: 26px; }
-.tagline-location { font-size: 31px; }
+.tagline-main { font-size: 22px; }
+.tagline-location { font-size: 24px; }
 
 .mixtape-band-callout {
-  display: inline-block;
-  margin-right: 7px;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 9px;
   font-family: var(--font-display);
   font-size: 1.34em;
   line-height: 0.95;
@@ -458,6 +459,31 @@ html[data-lang="es"] .lang-toggle {
     0 0 12px rgba(var(--accent2-rgb), 0.34),
     2px 2px 0 rgba(0, 0, 0, 0.92);
   transform: rotate(-2deg) translateY(2px);
+}
+
+.tagline-support {
+  display: block;
+  font-size: 0.86em;
+  line-height: 1.25;
+}
+
+.location-tail {
+  white-space: nowrap;
+}
+
+.tn-flag {
+  position: relative;
+  top: -0.06em;
+  display: inline-block;
+  width: 1.95em;
+  height: auto;
+  margin: 0 0.08em;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  vertical-align: middle;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.65),
+    0 0 7px rgba(var(--accent-rgb), 0.35);
 }
 
 @media (max-width: 700px) {
@@ -891,7 +917,7 @@ html[data-lang="es"] .lang-toggle {
 .stamp-row-plain {
   align-self: center;
   color: #fff;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   text-shadow:
     1px 1px 0 rgba(0, 0, 0, 0.95),
@@ -939,21 +965,70 @@ html[data-lang="es"] .lang-toggle {
     display: none;
   }
 
-  .genre-tag {
-    font-size: 22px;
+  .home-hero-copy {
+    padding-inline: 18px;
   }
 
-  .genre-and {
-    font-size: 16px;
-    margin: 0 -14px;
+  .tagline-main {
+    max-width: 320px;
+    margin: 0 auto;
+    font-size: 19px;
+    line-height: 1.2;
+  }
+
+  .mixtape-band-callout {
+    margin: 0 auto 10px;
+    font-size: clamp(21px, 6vw, 25px);
+    line-height: 0.95;
+    white-space: nowrap;
+    transform: rotate(-1.2deg);
+  }
+
+  html[data-lang="es"] .mixtape-band-callout {
+    font-size: clamp(19px, 5.5vw, 23px);
+  }
+
+  .tagline-support {
+    font-size: 0.92em;
+    line-height: 1.22;
+  }
+
+  .hero .stamp-row {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    align-items: center;
+    gap: 7px 13px;
+    margin: 15px auto 12px;
   }
 
   .stamp-row-plain {
-    font-size: 13px;
+    grid-column: 1 / -1;
+    justify-self: center;
+    font-size: 22px;
+    line-height: 1.05;
   }
 
-  .tagline-main { font-size: 19px; }
-  .tagline-location { font-size: 22px; }
+  .genre-tag {
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .genre-and {
+    font-size: 15px;
+    line-height: 1;
+    margin: 0 -6px;
+  }
+
+  .tagline-location {
+    max-width: 310px;
+    margin: 0 auto;
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .tn-flag {
+    width: 1.8em;
+  }
 
   .home-hero .cta-row {
     width: min(260px, calc(100vw - 32px));
