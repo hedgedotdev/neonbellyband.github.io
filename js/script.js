@@ -148,6 +148,44 @@
 })();
 
 // ---------------------------------------------------------------
+// Next-show countdown.
+//
+// The first .show-row in each .shows-list is treated as the next show.
+// Add data-show-date="YYYY-MM-DD" to that row and this drops a date badge
+// into its .details text. Past dates intentionally render no countdown.
+// ---------------------------------------------------------------
+(function () {
+  var DAY = 24 * 60 * 60 * 1000;
+  var lists = document.querySelectorAll(".shows-list");
+  if (!lists.length) return;
+
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  lists.forEach(function (list) {
+    var row = list.querySelector(".show-row");
+    if (!row) return;
+
+    var raw = row.getAttribute("data-show-date");
+    var match = raw && raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return;
+
+    var showDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    var days = Math.round((showDate.getTime() - today.getTime()) / DAY);
+    if (days < 0) return;
+
+    var details = row.querySelector(".details");
+    if (!details || details.querySelector(".show-countdown")) return;
+
+    var badge = document.createElement("span");
+    badge.className = "show-countdown";
+    badge.textContent = days === 0 ? "SHOW TODAY" : days + " " + (days === 1 ? "DAY" : "DAYS") + " AWAY";
+    details.insertBefore(badge, details.firstChild);
+    details.insertBefore(document.createTextNode(" "), badge.nextSibling);
+  });
+})();
+
+// ---------------------------------------------------------------
 // Empty shows list -> booking call to action.
 //
 // Any .shows-list[data-empty-cta] that holds no .show-row gets the CTA

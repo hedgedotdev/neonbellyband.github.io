@@ -175,12 +175,46 @@ nav.main-nav a.current {
 }
 
 .home-page .nav-row {
-  justify-content: flex-end;
+  justify-content: space-between;
   min-height: 58px;
 }
 
 .home-page .site-header .nav-brand {
+  display: inline-flex;
+  width: auto;
+  max-width: 48%;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.home-page .site-header .nav-brand:hover,
+.home-page .site-header .nav-brand:focus-visible {
+  box-shadow: none;
+}
+
+.home-page .site-header .nav-logo {
   display: none;
+}
+
+.home-nav-wordmark {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight, 400);
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  filter:
+    drop-shadow(0 0 7px rgba(var(--glow-hot), 0.78))
+    drop-shadow(0 0 18px rgba(var(--accent-rgb), 0.58))
+    drop-shadow(0 0 34px rgba(var(--glow-deep), 0.34));
+}
+
+.home-nav-wordmark::before,
+.home-nav-wordmark::after {
+  font-family: inherit;
+  font-weight: inherit;
 }
 
 @media (max-width: 560px) {
@@ -198,8 +232,12 @@ nav.main-nav a.current {
   }
 
   .home-page .nav-row {
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 0;
+  }
+
+  .home-page .site-header .nav-brand {
+    max-width: 100%;
   }
 }
 
@@ -1075,6 +1113,22 @@ a.show-row-link.venue:hover {
   text-transform: uppercase;
 }
 
+.show-countdown {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 10px 0 0;
+  padding: 4px 9px 5px;
+  color: #08080a;
+  background: var(--next-show, #ffd400);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 0 10px rgba(255, 212, 0, 0.5),
+    2px 2px 0 rgba(0, 0, 0, 0.72);
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(1deg);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .shows-list .show-row:first-of-type::before { animation: none; }
 }
@@ -1102,6 +1156,11 @@ a.show-row-link.venue:hover {
   .shows-list .show-row:first-of-type .venue,
   .shows-list .show-row:first-of-type .details {
     width: 100%;
+  }
+
+  .show-countdown {
+    width: fit-content;
+    margin: 0 0 8px;
   }
 }
 
