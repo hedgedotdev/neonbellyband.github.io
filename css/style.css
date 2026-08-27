@@ -404,7 +404,7 @@ nav.main-nav a.current {
 .tagline-main { font-size: 26px; }
 .tagline-location { font-size: 31px; }
 
-.party-band-callout {
+.mixtape-band-callout {
   display: inline-block;
   margin-right: 7px;
   font-family: var(--font-display);
