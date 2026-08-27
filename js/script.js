@@ -41,7 +41,7 @@
     home: {
       title: "Neon Belly | Banda de covers alt-rock y grunge de los 90 y 2000",
       html: [
-        [".tagline-main", '<span class="mixtape-band-callout">Tu Banda Rock MP3</span><span class="tagline-support">tocando favoritas del público de</span>'],
+        [".tagline-main", '<span class="mixtape-band-callout">Tu Banda Rock Playlist</span><span class="tagline-support">tocando favoritas del público de</span>'],
         [".tagline-location", 'en Nashville y Franklin <span class="location-tail"><img class="tn-flag" src="images/optimized/tennessee-flag-96.png?v=1" width="96" height="58" alt="Tennessee" title="Tennessee"> y alrededores</span>']
       ],
       text: [
