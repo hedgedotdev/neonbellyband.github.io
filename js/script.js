@@ -87,17 +87,31 @@
     if (!ctx) return;
 
     var w, h, image, buf;
+    var visible = true;
+    var pageVisible = document.visibilityState !== "hidden";
 
     // The canvas is upscaled to fill the hero, so its internal resolution has
     // to track the hero's aspect ratio — a fixed-size buffer gets stretched
     // wider than tall and the snow smears into horizontal streaks.
-    // PX is the on-screen size of one noise pixel.
-    var PX = 3;
+    // PX is the on-screen size of one noise pixel. On phones, coarser snow
+    // and a slower redraw preserve the effect without burning battery.
+    function mobileHero() {
+      return window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+    }
+
+    function pixelSize() {
+      return mobileHero() ? 8 : 3;
+    }
+
+    function frameMs() {
+      return mobileHero() ? 240 : 50;
+    }
 
     function resize() {
       var rect = hero.getBoundingClientRect();
-      var nw = Math.max(8, Math.round(rect.width / PX));
-      var nh = Math.max(8, Math.round(rect.height / PX));
+      var px = pixelSize();
+      var nw = Math.max(8, Math.round(rect.width / px));
+      var nh = Math.max(8, Math.round(rect.height / px));
       if (nw === w && nh === h) return;
       w = canvas.width = nw;
       h = canvas.height = nh;
@@ -134,16 +148,30 @@
     }
 
     frame();
-    if (!animate) return;
+    if (!animate || mobileHero()) return;
 
-    // ~20fps: fast enough to read as live snow, slow enough to stay cheap.
-    var last = 0;
-    (function loop(ts) {
-      requestAnimationFrame(loop);
-      if (ts - last < 50) return;
-      last = ts;
-      frame();
-    })(0);
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        visible = !!(entries[0] && entries[0].isIntersecting);
+      });
+      observer.observe(hero);
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      pageVisible = document.visibilityState !== "hidden";
+    });
+
+    // Desktop runs ~20fps; phones run ~4fps with fewer pixels. Use a timer
+    // instead of waking on every requestAnimationFrame; the canvas only wakes
+    // when it is time to draw.
+    (function loop() {
+      window.setTimeout(function () {
+        if (visible && pageVisible) {
+          frame();
+        }
+        loop();
+      }, frameMs());
+    })();
   }
 })();
 
@@ -177,11 +205,17 @@
     var details = row.querySelector(".details");
     if (!details || details.querySelector(".show-countdown")) return;
 
+    var dateText = document.createElement("span");
+    dateText.className = "show-date-text";
+    while (details.firstChild) {
+      dateText.appendChild(details.firstChild);
+    }
+
     var badge = document.createElement("span");
     badge.className = "show-countdown";
     badge.textContent = days === 0 ? "SHOW TODAY" : days + " " + (days === 1 ? "DAY" : "DAYS") + " AWAY";
-    details.insertBefore(badge, details.firstChild);
-    details.insertBefore(document.createTextNode(" "), badge.nextSibling);
+    details.appendChild(badge);
+    details.appendChild(dateText);
   });
 })();
 

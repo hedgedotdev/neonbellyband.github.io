@@ -420,24 +420,48 @@ nav.main-nav a.current {
 }
 
 @media (max-width: 700px) {
-  .home-hero { padding-bottom: 30px; }
+  .home-hero {
+    padding-bottom: 28px;
+  }
 
-  .home-hero-media { min-height: 190px; }
+  .home-hero .static-canvas {
+    opacity: 0.055;
+  }
+
+  .home-hero .crt-lines {
+    opacity: 0.34;
+  }
+
+  .home-hero .crt-lines::after {
+    animation: none;
+  }
+
+  .home-hero .tv-glow {
+    opacity: 0.3;
+  }
+
+  .home-hero-media {
+    min-height: 0;
+    aspect-ratio: 1284 / 253;
+  }
 
   .home-hero-photo {
-    object-position: 48% center;
+    height: auto;
+    min-height: 0;
+    object-fit: contain;
+    object-position: center;
   }
 
   .home-hero-logo {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
-    width: 108px;
-    margin: -54px auto 0;
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    width: clamp(58px, 18vw, 74px);
+    margin: 0;
+    animation: hero-logo-drift 8.4s ease-in-out infinite;
   }
 
-  .home-hero-copy { padding-top: 18px; }
+  .home-hero-copy { padding-top: 20px; }
 }
 
 /* Scanline/aperture grille pass that sits ABOVE the headline, so the lines
@@ -821,11 +845,41 @@ nav.main-nav a.current {
 .genre-tag.metal::after  { animation-duration: 5.2s; animation-delay: -1.7s; }
 
 @media (max-width: 700px) {
-  .genre-tag { font-size: 22px; }
+  .hero-title {
+    animation: none;
+  }
+
+  .hero-title::before,
+  .hero-title::after {
+    display: none;
+  }
+
+  .genre-tag {
+    font-size: 22px;
+  }
+
+  .home-hero .cta-row {
+    width: min(260px, calc(100vw - 32px));
+    margin: 22px auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 11px;
+  }
 
   .follow-sticker {
     --follow-rotate: -2deg;
-    margin-bottom: 2px;
+    align-self: flex-start;
+    margin: 0 0 1px;
+    animation: follow-sticker-drift 8.4s ease-in-out infinite;
+  }
+
+  .home-hero .cta-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    animation: none;
   }
 }
 
@@ -1199,38 +1253,82 @@ a.show-row-link.venue:hover {
   transform: rotate(1deg);
 }
 
+.show-date-text {
+  display: inline;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .shows-list .show-row:first-of-type::before { animation: none; }
 }
 
 @media (max-width: 640px) {
   .shows-list .show-row:first-of-type {
-    align-items: flex-start;
-    padding: 42px 14px 15px;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px 10px;
+    padding: 15px 14px;
+    border-left-width: 3px;
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.7),
+      0 0 20px rgba(255, 212, 0, 0.16);
   }
 
   .shows-list .show-row:first-of-type::before {
-    left: 14px;
-    top: 18px;
+    position: static;
+    grid-column: 1;
+    grid-row: 2;
+    align-self: center;
     width: 34px;
     height: 21px;
-    transform: none;
+    transform: translateX(-1px);
     animation-name: show-arrow-pulse-mobile;
   }
 
   .shows-list .show-row:first-of-type::after {
-    left: 56px;
-    top: 16px;
+    position: static;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: start;
+    margin-left: 50px;
+    padding: 4px 10px 5px;
+    font-size: 10px;
   }
 
   .shows-list .show-row:first-of-type .venue,
   .shows-list .show-row:first-of-type .details {
+    min-width: 0;
+  }
+
+  .shows-list .show-row:first-of-type .venue {
+    grid-column: 2;
+    grid-row: 2;
     width: 100%;
+    padding-bottom: 7px;
+    border-bottom: 2px solid rgba(255, 212, 0, 0.5);
+    font-size: 15px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .shows-list .show-row:first-of-type .details {
+    grid-column: 2;
+    grid-row: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    line-height: 1.35;
   }
 
   .show-countdown {
-    width: fit-content;
-    margin: 0 0 8px;
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .show-date-text {
+    display: block;
+    max-width: 100%;
   }
 }
 
@@ -1258,6 +1356,17 @@ a.show-row-link.venue:hover {
 
 @media (max-width: 560px) {
   .shows-empty { justify-content: center; text-align: center; }
+
+  .poster-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 28px;
+  }
+
+  .poster-card {
+    width: min(230px, 100%);
+  }
 }
 
 .poster-grid {
@@ -1311,7 +1420,7 @@ a.show-row-link.venue:hover {
    actually transparent), so the paper is recoloured with a multiply blend:
    white paper picks up the faded pinkish-purple, black ink stays black. */
 .poster-fill {
-  background-color: #cfa4de;
+  background-color: transparent;
   isolation: isolate;
   line-height: 0;
   margin: 0 auto 10px;
@@ -1319,7 +1428,8 @@ a.show-row-link.venue:hover {
 
 /* margin lives on the wrapper, or the fill colour bleeds below the artwork */
 .poster-fill .poster-tint-fade {
-  mix-blend-mode: multiply;
+  filter: sepia(0.16) saturate(1.25) hue-rotate(235deg) brightness(0.94);
+  mix-blend-mode: normal;
   margin: 0;
 }
 
@@ -1431,6 +1541,26 @@ img.photo-placeholder { object-fit: cover; display: block; padding: 0; }
   text-align: center;
 }
 
+@media (max-width: 520px) {
+  .member-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 150px));
+    justify-content: center;
+    gap: 22px 16px;
+  }
+
+  .member-card {
+    width: auto;
+    min-width: 0;
+  }
+
+  .photo-placeholder.thumb {
+    width: min(130px, 100%);
+    height: auto;
+    aspect-ratio: 1;
+  }
+}
+
 /* role sits above the photo, name below it */
 .member-role {
   display: block;
@@ -1530,14 +1660,15 @@ table.infotable td.label {
 .post-gallery-poster-fill {
   width: max-content;
   max-width: 100%;
-  background-color: #c49ad3;
+  background-color: transparent;
   isolation: isolate;
 }
 
 .post-gallery-poster-fill .post-gallery-poster {
   width: auto;
   border: none;
-  mix-blend-mode: multiply;
+  filter: sepia(0.16) saturate(1.25) hue-rotate(235deg) brightness(0.94);
+  mix-blend-mode: normal;
 }
 
 /* ---------- Favourite covers ----------
@@ -1693,7 +1824,7 @@ table.infotable td.label {
   width: 64px;
   height: 96px;
   display: block;
-  background-color: #c49ad3;
+  background-color: transparent;
   isolation: isolate;
 }
 
@@ -1701,7 +1832,8 @@ table.infotable td.label {
   width: 100%;
   height: 100%;
   border: none;
-  mix-blend-mode: multiply;
+  filter: sepia(0.16) saturate(1.25) hue-rotate(235deg) brightness(0.94);
+  mix-blend-mode: normal;
 }
 
 .post-teaser-body {
