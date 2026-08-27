@@ -796,7 +796,7 @@
 // from.
 // ---------------------------------------------------------------
 (function () {
-  var imgs = Array.prototype.slice.call(document.querySelectorAll(".post-gallery img"));
+  var imgs = Array.prototype.slice.call(document.querySelectorAll(".post-gallery img, .fan-photo-card img"));
   if (!imgs.length) return;
 
   function titleFor(img) {
@@ -805,6 +805,11 @@
       var h = post.querySelector("h2");
       if (h) return h.textContent.trim();
     }
+    // page h1s carry .hero-title-sm uniquely; plain .hero-title also
+    // matches the nav wordmark (and genre-tag stamps), which sits earlier
+    // in the DOM and would otherwise win the title for every subpage.
+    var pageTitle = document.querySelector(".hero-title-sm");
+    if (pageTitle) return pageTitle.textContent.trim();
     var hero = document.querySelector(".hero-title");
     if (hero) return hero.textContent.trim();
     return document.title;
@@ -851,7 +856,13 @@
   }
 
   imgs.forEach(function (img, i) {
-    img.addEventListener("click", function () { open(i); });
+    img.addEventListener("click", function (e) {
+      // fan photos are wrapped in <a href target="_blank"> (a plain-link
+      // fallback for no-JS); the lightbox takes over the click instead
+      var link = img.closest("a");
+      if (link) e.preventDefault();
+      open(i);
+    });
   });
 
   overlay.querySelector(".lightbox-prev").addEventListener("click", function () { show(idx - 1); });
