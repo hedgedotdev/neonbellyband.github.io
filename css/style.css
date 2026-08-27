@@ -2192,10 +2192,16 @@ table.infotable td.label {
 }
 
 /* the single big member-page photo runs full width of its column instead
-   of the shared blog-row height */
+   of the shared blog-row height, with the same accent-colored ring as
+   the member's profile photo and the thumbnail grids */
 .col-main .post-gallery img {
   height: auto;
   width: 100%;
+  border: 2px solid rgba(var(--accent-rgb), 0.68);
+  box-shadow:
+    0 0 0 3px #050505,
+    0 0 0 4px rgba(var(--accent-rgb), 0.28),
+    0 0 16px rgba(var(--accent-rgb), 0.18);
 }
 
 /* placeholder tile until real photos are dropped in */
