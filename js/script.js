@@ -198,7 +198,7 @@
     { id: "foo",            name: "Foo",           font: "oswald",      title: "yellowtail" },
     { id: "dirt",           name: "Dirt",          font: "stencilbold", title: "wetpaint" },
     { id: "core",           name: "Core",          font: "teko",        title: "archivo" },
-    { id: "houdini",        name: "Houdini",       font: "barlow",      title: "anton" },
+    { id: "mellon",         name: "Mellon Collie", font: "josefin",     title: "yellowtail" },
     { id: "masterofreality", name: "Master of Reality", font: "teko",   title: "puddles" },
     { id: "badmotorfinger", name: "Badmotor",      font: "barlow",      title: "distressed" },
     { id: "utero",          name: "In Utero",      font: "typewriter",  title: "" },
