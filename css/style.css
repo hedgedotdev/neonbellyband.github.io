@@ -366,12 +366,15 @@ nav.main-nav a.current {
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
-  filter:
+  /* same uneven-mains flicker as the wordmark (.hero-title's sign-flicker
+     keyframe reads this custom property), so the two read as one sign */
+  --bloom:
     drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.85))
     drop-shadow(0 0 26px rgba(var(--accent-rgb), 0.55))
     drop-shadow(0 0 48px rgba(var(--accent2-rgb), 0.35));
+  filter: var(--bloom);
   transform-origin: 50% 54%;
-  animation: hero-logo-drift 7.2s ease-in-out infinite, hero-logo-glow 4.8s ease-in-out infinite;
+  animation: hero-logo-drift 7.2s ease-in-out infinite, sign-flicker 7s linear infinite;
 }
 
 @keyframes hero-logo-drift {
@@ -379,23 +382,6 @@ nav.main-nav a.current {
   24%      { transform: translate(-1px, 0.5px) rotate(-0.35deg); }
   48%      { transform: translate(0.5px, -0.5px) rotate(0.25deg); }
   72%      { transform: translate(1px, 0.5px) rotate(-0.15deg); }
-}
-
-@keyframes hero-logo-glow {
-  0%, 100% {
-    filter:
-      brightness(1)
-      drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.85))
-      drop-shadow(0 0 26px rgba(var(--accent-rgb), 0.55))
-      drop-shadow(0 0 48px rgba(var(--accent2-rgb), 0.35));
-  }
-  50% {
-    filter:
-      brightness(1.12)
-      drop-shadow(0 0 14px rgba(var(--accent-rgb), 0.95))
-      drop-shadow(0 0 34px rgba(var(--accent-rgb), 0.7))
-      drop-shadow(0 0 62px rgba(var(--accent2-rgb), 0.45));
-  }
 }
 
 .home-hero-copy {
