@@ -41,7 +41,7 @@
     home: {
       title: "Neon Belly | Banda de covers alt-rock y grunge de los 90 y 2000",
       html: [
-        [".tagline-main", '<span class="mixtape-band-callout">Banda Mixtape</span> tocando las favoritas de todos']
+        [".tagline-main", '<span class="mixtape-band-callout">Banda de Rock de CD Quemado</span> tocando esas canciones que valía la pena grabar']
       ],
       text: [
         [".stamp-row-plain:first-child", "himnos de"],
