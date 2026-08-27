@@ -4,16 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neon Belly | 90s &amp; 2000s Alt-Rock + Grunge Cover Band</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Yellowtail&family=Shrikhand&family=Rubik+Puddles&family=Rubik+Bubbles&family=Rubik+Distressed&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Burned&family=Rubik+Glitch&family=Rubik+Beastly&family=Rubik+Moonrocks&family=Rubik+Vinyl&family=Lacquer&family=Stardos+Stencil:wght@400;700&family=Saira+Stencil+One&family=Special+Elite&family=Oswald:wght@300&family=Barlow+Condensed:wght@200&family=Josefin+Sans:wght@300&family=Teko:wght@300&family=Chakra+Petch:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=72">
+<link rel="preload" as="image" href="images/optimized/neon-belly-live-header-1284.webp?v=1" fetchpriority="high">
+<link rel="stylesheet" href="css/fonts.css?v=1">
+<link rel="stylesheet" href="css/style.css?v=89">
 </head>
-<body>
+<body class="home-page">
 
 <header class="site-header">
   <div class="nav-row">
-    <div class="nav-brand">NEON <span>BELLY</span></div>
+    <a class="nav-brand" href="index.html" aria-label="Neon Belly home">
+      <span class="home-nav-wordmark hero-title" data-text="NEON BELLY">NEON BELLY</span>
+    </a>
     <nav class="main-nav">
       <a href="index.html" class="current">Home</a>
       <a href="shows.html">Shows</a>
@@ -24,22 +25,32 @@
   </div>
 </header>
 
-<div class="hero">
-  <h1 class="display hero-title" data-text="Neon Belly">Neon Belly</h1>
-  <p class="tagline">High-energy 90s/2000s alt-rock, heavy riffs &amp; grunge anthems.
-  Based in Nashville/Franklin, TN.</p>
-
-  <div class="stamp-row">
-    <span class="hero-title genre-tag rock" data-text="Rock">Rock</span>
-    <span class="hero-title genre-tag grunge" data-text="Grunge">Grunge</span>
-    <span class="hero-title genre-tag metal" data-text="Metal">Metal</span>
+<div class="hero home-hero">
+  <div class="home-hero-media">
+    <img class="home-hero-photo" src="images/optimized/neon-belly-live-header-1284.webp?v=1" width="1284" height="253" alt="Neon Belly playing live to a packed room" decoding="async" fetchpriority="high">
+    <img class="home-hero-logo" src="images/optimized/neon-belly-logo-420.webp?v=1" width="420" height="420" alt="Neon Belly" decoding="async" fetchpriority="high">
   </div>
 
-  <div class="cta-row">
-    <a class="btn facebook" href="https://www.facebook.com/neonbellyTN" target="_blank" rel="noopener"><span class="icon-badge fb">f</span> Facebook</a>
-    <a class="btn instagram" href="https://www.instagram.com/neonbelly_band" target="_blank" rel="noopener"><span class="icon-badge ig">◎</span> Instagram</a>
-    <a class="btn youtube" href="https://www.youtube.com/@NEONBELLYBAND" target="_blank" rel="noopener"><span class="icon-badge yt">▶</span> YouTube</a>
-    <a class="btn book" href="booking.html">Book Us</a>
+  <div class="home-hero-copy">
+    <h1 class="visually-hidden">Neon Belly</h1>
+    <p class="tagline">
+      <span class="tagline-main"><span class="party-band-callout">Party Band</span> 90s/2000s alt-rock, heavy riffs &amp; grunge anthems.</span>
+      <span class="tagline-location">Based in Nashville/Franklin, TN.</span>
+    </p>
+
+    <div class="stamp-row">
+      <span class="hero-title genre-tag rock" data-text="Rock">Rock</span>
+      <span class="hero-title genre-tag grunge" data-text="Grunge">Grunge</span>
+      <span class="hero-title genre-tag metal" data-text="Metal">Metal</span>
+    </div>
+
+    <div class="cta-row">
+      <span class="follow-sticker" aria-hidden="true">Follow Us</span>
+      <a class="btn facebook" href="https://www.facebook.com/neonbellyTN" target="_blank" rel="noopener"><span class="icon-badge fb">f</span> Facebook</a>
+      <a class="btn instagram" href="https://www.instagram.com/neonbelly_band" target="_blank" rel="noopener"><span class="icon-badge ig">◎</span> Instagram</a>
+      <a class="btn youtube" href="https://www.youtube.com/@NEONBELLYBAND" target="_blank" rel="noopener"><span class="icon-badge yt">▶</span> YouTube</a>
+      <a class="btn book" href="booking.html">Book Us</a>
+    </div>
   </div>
 </div>
 
@@ -50,16 +61,18 @@
     <p class="section-sub">Where to catch us next.</p>
 
     <div class="shows-list" data-empty-cta>
-      <div class="show-row">
+      <div class="show-row" data-show-date="2026-10-03">
         <a class="show-row-link venue" href="https://www.facebook.com/events/1028721489974760/" target="_blank" rel="noopener">The Pond, Franklin, TN</a>
         <span class="details">Sat, Oct 3, 2026 &middot; 8:00 PM &ndash; 11:00 PM</span>
       </div>
       <!-- Add an upcoming show by copying this block inside .shows-list:
-      <div class="show-row">
+      <div class="show-row" data-show-date="YYYY-MM-DD">
         <span class="venue">Venue Name, City, State</span>
         <span class="details">Date · Doors/Set Time</span>
       </div>
-      While no .show-row exists here, js/script.js swaps in the booking CTA. -->
+      The first .show-row gets the next-show arrow/countdown while its
+      data-show-date is today or future. While no .show-row exists here,
+      js/script.js swaps in the booking CTA. -->
     </div>
 
     <p class="shows-secondary" style="margin-top:20px;"><a href="shows.html">&raquo; See all shows, including past gigs</a></p>
@@ -67,36 +80,38 @@
 
   <section class="block-section">
     <h2 class="section-title">The Band</h2>
-    <img class="band-photo" src="images/blog/pond-band.jpg" alt="Neon Belly, the full lineup, at The Pond">
+    <figure class="band-photo-frame" aria-label="Neon Belly, the full lineup, at The Pond">
+      <img class="band-photo" src="images/optimized/blog/pond-band-1280.webp?v=1" width="1280" height="964" alt="Neon Belly, the full lineup, at The Pond" loading="lazy" decoding="async">
+    </figure>
     <div class="member-grid">
 
       <a class="member-card" href="members/vocals.html">
         <span class="member-role">Vocals</span>
-        <img class="photo-placeholder thumb" src="images/members/vocals.jpg" alt="Hedge">
+        <img class="photo-placeholder thumb" src="images/optimized/members/vocals-720.webp?v=1" width="542" height="720" alt="Hedge" loading="lazy" decoding="async">
         <h3>Hedge</h3>
       </a>
 
       <a class="member-card" href="members/guitar-lead.html">
         <span class="member-role">Guitar</span>
-        <img class="photo-placeholder thumb" src="images/members/guitar-lead.jpg" alt="Jhonatan (Cucu) Aguilar">
+        <img class="photo-placeholder thumb" src="images/optimized/members/guitar-lead-720.webp?v=1" width="332" height="720" alt="Jhonatan (Cucu) Aguilar" loading="lazy" decoding="async">
         <h3>Jhonatan (Cucu) Aguilar</h3>
       </a>
 
       <a class="member-card" href="members/guitar-rhythm.html">
         <span class="member-role">Guitar</span>
-        <img class="photo-placeholder thumb" src="images/members/guitar-rhythm.jpg" alt="Brett Holden" style="object-position: 50% 31%; transform: scale(1.15); clip-path: inset(0);">
+        <img class="photo-placeholder thumb" src="images/optimized/members/guitar-rhythm-720.webp?v=1" width="333" height="720" alt="Brett Holden" loading="lazy" decoding="async" style="object-position: 50% 31%; transform: scale(1.15); clip-path: inset(0);">
         <h3>Brett Holden</h3>
       </a>
 
       <a class="member-card" href="members/bass.html">
         <span class="member-role">Bass</span>
-        <img class="photo-placeholder thumb" src="images/members/bass.jpg" alt="Chris Lee" style="object-position: 50% 0%;">
+        <img class="photo-placeholder thumb" src="images/optimized/members/bass-720.webp?v=1" width="481" height="720" alt="Chris Lee" loading="lazy" decoding="async" style="object-position: 50% 0%;">
         <h3>Chris Lee</h3>
       </a>
 
       <a class="member-card" href="members/drums.html">
         <span class="member-role">Drums</span>
-        <img class="photo-placeholder thumb" src="images/members/drums.jpg" alt="Nate">
+        <img class="photo-placeholder thumb" src="images/optimized/members/drums-720.webp?v=1" width="562" height="720" alt="Nate" loading="lazy" decoding="async">
         <h3>Nate</h3>
       </a>
 
@@ -110,7 +125,7 @@
     <div class="post-rollup">
 
       <a class="post-teaser" href="blog.html#kimbros-2026-08-08">
-        <img class="post-teaser-poster" src="images/shows/kimbros-2026-08-08.png" alt="Kimbro's show poster">
+        <img class="post-teaser-poster" src="images/optimized/shows/kimbros-2026-08-08-460.webp?v=1" width="460" height="711" alt="Kimbro's show poster" loading="lazy" decoding="async">
         <span class="post-teaser-body">
           <span class="post-teaser-date">August 9, 2026</span>
           <span class="post-teaser-title">Kimbro's, Front to Back</span>
@@ -122,7 +137,7 @@
 
       <a class="post-teaser" href="blog.html#the-pond-2026-07-11">
         <span class="post-teaser-poster-fill">
-          <img class="post-teaser-poster poster-tint-fade" src="images/shows/the-pond-2026-07-11.png" alt="The Pond show poster">
+          <img class="post-teaser-poster poster-tint-fade" src="images/optimized/shows/the-pond-2026-07-11-460.webp?v=1" width="460" height="712" alt="The Pond show poster" loading="lazy" decoding="async">
         </span>
         <span class="post-teaser-body">
           <span class="post-teaser-date">July 12, 2026</span>
@@ -150,7 +165,7 @@
   <p>&copy; <span id="year"></span> Neon Belly. Last updated: <span id="footer-updated"></span>.</p>
 </footer>
 
-<script src="js/script.js?v=72"></script>
+<script src="js/script.js?v=75"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

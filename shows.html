@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neon Belly | Shows</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Yellowtail&family=Shrikhand&family=Rubik+Puddles&family=Rubik+Bubbles&family=Rubik+Distressed&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Burned&family=Rubik+Glitch&family=Rubik+Beastly&family=Rubik+Moonrocks&family=Rubik+Vinyl&family=Lacquer&family=Stardos+Stencil:wght@400;700&family=Saira+Stencil+One&family=Special+Elite&family=Oswald:wght@300&family=Barlow+Condensed:wght@200&family=Josefin+Sans:wght@300&family=Teko:wght@300&family=Chakra+Petch:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=72">
+<link rel="stylesheet" href="css/fonts.css?v=1">
+<link rel="stylesheet" href="css/style.css?v=89">
 </head>
 <body>
 
 <header class="site-header">
   <div class="nav-row">
-    <div class="nav-brand">NEON <span>BELLY</span></div>
+    <a class="nav-brand" href="index.html" aria-label="Neon Belly home">
+      <img class="nav-logo" src="images/optimized/neon-belly-logo-220.webp?v=1" width="220" height="220" alt="Neon Belly" decoding="async">
+    </a>
     <nav class="main-nav">
       <a href="index.html">Home</a>
       <a href="shows.html" class="current">Shows</a>
@@ -35,16 +35,18 @@
     <h2 class="section-title">Upcoming Shows</h2>
 
     <div class="shows-list" data-empty-cta>
-      <div class="show-row">
+      <div class="show-row" data-show-date="2026-10-03">
         <a class="show-row-link venue" href="https://www.facebook.com/events/1028721489974760/" target="_blank" rel="noopener">The Pond, Franklin, TN</a>
         <span class="details">Sat, Oct 3, 2026 &middot; 8:00 PM &ndash; 11:00 PM</span>
       </div>
       <!-- Add an upcoming show by copying this block inside .shows-list:
-      <div class="show-row">
+      <div class="show-row" data-show-date="YYYY-MM-DD">
         <span class="venue">Venue Name, City, State</span>
         <span class="details">Date · Doors/Set Time</span>
       </div>
-      While no .show-row exists here, js/script.js swaps in the booking CTA. -->
+      The first .show-row gets the next-show arrow/countdown while its
+      data-show-date is today or future. While no .show-row exists here,
+      js/script.js swaps in the booking CTA. -->
     </div>
 
     <p class="shows-secondary" style="margin-top:16px;">Want us at your bar, club, or private event?
@@ -58,7 +60,7 @@
     <div class="poster-grid">
 
       <a class="poster-card" href="blog.html#kimbros-2026-08-08">
-        <img src="images/shows/kimbros-2026-08-08.png" alt="Neon Belly live at Kimbro's, August 8 2026"
+        <img src="images/optimized/shows/kimbros-2026-08-08-460.webp?v=1" width="460" height="711" alt="Neon Belly live at Kimbro's, August 8 2026" loading="lazy" decoding="async"
              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div class="poster-placeholder" style="display:none;">POSTER COMING SOON</div>
         <div class="show-venue">Live at Kimbro's</div>
@@ -68,7 +70,7 @@
 
       <a class="poster-card" href="blog.html#the-pond-2026-07-11">
         <div class="poster-fill">
-          <img class="poster-tint-fade" src="images/shows/the-pond-2026-07-11.png" alt="Neon Belly live at The Pond, July 11 2026"
+          <img class="poster-tint-fade" src="images/optimized/shows/the-pond-2026-07-11-460.webp?v=1" width="460" height="712" alt="Neon Belly live at The Pond, July 11 2026" loading="lazy" decoding="async"
                onerror="this.parentElement.style.display='none'; this.closest('.poster-card').querySelector('.poster-placeholder').style.display='flex';">
         </div>
         <div class="poster-placeholder" style="display:none;">POSTER COMING SOON</div>
@@ -92,7 +94,7 @@
   <p>&copy; <span id="year"></span> Neon Belly. Last updated: <span id="footer-updated"></span>.</p>
 </footer>
 
-<script src="js/script.js?v=72"></script>
+<script src="js/script.js?v=75"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

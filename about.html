@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Neon Belly | About the Band</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Anton&family=Yellowtail&family=Shrikhand&family=Rubik+Puddles&family=Rubik+Bubbles&family=Rubik+Distressed&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Burned&family=Rubik+Glitch&family=Rubik+Beastly&family=Rubik+Moonrocks&family=Rubik+Vinyl&family=Lacquer&family=Stardos+Stencil:wght@400;700&family=Saira+Stencil+One&family=Special+Elite&family=Oswald:wght@300&family=Barlow+Condensed:wght@200&family=Josefin+Sans:wght@300&family=Teko:wght@300&family=Chakra+Petch:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=72">
+<link rel="stylesheet" href="css/fonts.css?v=1">
+<link rel="stylesheet" href="css/style.css?v=89">
 </head>
 <body>
 
 <header class="site-header">
   <div class="nav-row">
-    <div class="nav-brand">NEON <span>BELLY</span></div>
+    <a class="nav-brand" href="index.html" aria-label="Neon Belly home">
+      <img class="nav-logo" src="images/optimized/neon-belly-logo-220.webp?v=1" width="220" height="220" alt="Neon Belly" decoding="async">
+    </a>
     <nav class="main-nav">
       <a href="index.html">Home</a>
       <a href="shows.html">Shows</a>
@@ -33,7 +33,9 @@
 
   <section class="block-section">
     <h2 class="section-title">Who We Are</h2>
-    <img class="band-photo" src="images/blog/pond-band.jpg" alt="Neon Belly, the full lineup, at The Pond">
+    <figure class="band-photo-frame" aria-label="Neon Belly, the full lineup, at The Pond">
+      <img class="band-photo" src="images/optimized/blog/pond-band-1280.webp?v=1" width="1280" height="964" alt="Neon Belly, the full lineup, at The Pond" loading="lazy" decoding="async">
+    </figure>
 
     <p>Neon Belly is a five piece out of Franklin, Tennessee. We do not come from
     the same place, the same jobs, or even the same corner of music. We landed in
@@ -57,31 +59,31 @@
 
       <a class="member-card" href="members/vocals.html">
         <span class="member-role">Vocals</span>
-        <img class="photo-placeholder thumb" src="images/members/vocals.jpg" alt="Hedge">
+        <img class="photo-placeholder thumb" src="images/optimized/members/vocals-720.webp?v=1" width="542" height="720" alt="Hedge" loading="lazy" decoding="async">
         <h3>Hedge</h3>
       </a>
 
       <a class="member-card" href="members/guitar-lead.html">
         <span class="member-role">Guitar</span>
-        <img class="photo-placeholder thumb" src="images/members/guitar-lead.jpg" alt="Jhonatan (Cucu) Aguilar">
+        <img class="photo-placeholder thumb" src="images/optimized/members/guitar-lead-720.webp?v=1" width="332" height="720" alt="Jhonatan (Cucu) Aguilar" loading="lazy" decoding="async">
         <h3>Jhonatan (Cucu) Aguilar</h3>
       </a>
 
       <a class="member-card" href="members/guitar-rhythm.html">
         <span class="member-role">Guitar</span>
-        <img class="photo-placeholder thumb" src="images/members/guitar-rhythm.jpg" alt="Brett Holden" style="object-position: 50% 31%; transform: scale(1.15); clip-path: inset(0);">
+        <img class="photo-placeholder thumb" src="images/optimized/members/guitar-rhythm-720.webp?v=1" width="333" height="720" alt="Brett Holden" loading="lazy" decoding="async" style="object-position: 50% 31%; transform: scale(1.15); clip-path: inset(0);">
         <h3>Brett Holden</h3>
       </a>
 
       <a class="member-card" href="members/bass.html">
         <span class="member-role">Bass</span>
-        <img class="photo-placeholder thumb" src="images/members/bass.jpg" alt="Chris Lee" style="object-position: 50% 0%;">
+        <img class="photo-placeholder thumb" src="images/optimized/members/bass-720.webp?v=1" width="481" height="720" alt="Chris Lee" loading="lazy" decoding="async" style="object-position: 50% 0%;">
         <h3>Chris Lee</h3>
       </a>
 
       <a class="member-card" href="members/drums.html">
         <span class="member-role">Drums</span>
-        <img class="photo-placeholder thumb" src="images/members/drums.jpg" alt="Nate">
+        <img class="photo-placeholder thumb" src="images/optimized/members/drums-720.webp?v=1" width="562" height="720" alt="Nate" loading="lazy" decoding="async">
         <h3>Nate</h3>
       </a>
 
@@ -112,7 +114,7 @@
   <p>&copy; <span id="year"></span> Neon Belly. Last updated: <span id="footer-updated"></span>.</p>
 </footer>
 
-<script src="js/script.js?v=72"></script>
+<script src="js/script.js?v=75"></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
