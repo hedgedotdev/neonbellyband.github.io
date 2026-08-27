@@ -431,6 +431,9 @@ html[data-lang="es"] .lang-toggle {
   /* same uneven-mains flicker as the wordmark (.hero-title's sign-flicker
      keyframe reads this custom property), so the two read as one sign */
   --bloom:
+    drop-shadow(0 0 4px rgba(255, 245, 245, 0.34))
+    drop-shadow(0 0 12px rgba(255, 20, 20, 0.38))
+    drop-shadow(0 0 24px rgba(255, 20, 80, 0.22))
     drop-shadow(0 0 14px rgba(var(--accent-rgb), 0.95))
     drop-shadow(0 0 34px rgba(var(--accent-rgb), 0.8))
     drop-shadow(0 0 64px rgba(var(--accent2-rgb), 0.55))
@@ -1460,6 +1463,16 @@ a.show-row-link.venue:hover {
 .shows-list .show-row:first-of-type .show-price {
   font-size: 13px;
   padding: 4px 10px 5px;
+}
+
+.shows-list .show-row:first-of-type .show-price.no-cover {
+  color: #ffe600;
+  background: rgba(255, 230, 0, 0.16);
+  border-color: rgba(255, 230, 0, 0.74);
+  text-shadow:
+    0 0 6px rgba(255, 230, 0, 0.75),
+    0 0 18px rgba(255, 230, 0, 0.34);
+  box-shadow: 0 0 16px rgba(255, 230, 0, 0.18);
 }
 
 .show-row .details { color: var(--text-dim); font-size: 13px; }
