@@ -3399,3 +3399,243 @@ html[data-title="archivo"]     { --title-scale: 0.92; }
   margin-left: 0;
   z-index: 9998;
 }
+
+/* ---------- EPK (Electronic Press Kit) ---------- */
+
+.epk-hero-location {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.epk-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 12px;
+  margin-top: 18px;
+}
+
+.epk-lede {
+  max-width: 640px;
+  color: var(--text-dim);
+}
+
+/* -- video section -- */
+
+.epk-video-featured {
+  max-width: 800px;
+  margin: 14px auto;
+}
+
+.epk-video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin: 10px auto 0;
+}
+
+.epk-video-grid .video-embed {
+  max-width: none;
+  margin: 0;
+}
+
+/* click-to-load facade: avoids loading every YouTube iframe up front */
+.epk-video-facade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  background-color: #000;
+}
+
+.epk-video-facade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.28);
+  transition: background 0.15s;
+}
+
+.epk-video-facade:hover::before,
+.epk-video-facade:focus-visible::before {
+  background: rgba(0, 0, 0, 0.44);
+}
+
+.epk-video-facade::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 62px;
+  height: 62px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.92);
+  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.35), 0 0 24px rgba(var(--accent-rgb), 0.5);
+}
+
+.epk-video-facade span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-42%, -50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 0 12px 20px;
+  border-color: transparent transparent transparent #08080a;
+}
+
+.epk-video-grid .epk-video-facade::after { width: 46px; height: 46px; }
+.epk-video-grid .epk-video-facade span {
+  border-width: 9px 0 9px 15px;
+}
+
+.epk-video-title {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* -- The Sound: representative artist tags -- */
+
+.epk-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 10px;
+  margin-top: 16px;
+}
+
+.epk-tag {
+  padding: 6px 13px;
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+  border-radius: 999px;
+  background: var(--panel-alt);
+  color: var(--text);
+  font-size: 13px;
+  font-family: "Archivo Black", Arial, sans-serif;
+  letter-spacing: 0.2px;
+}
+
+/* -- Live highlights -- */
+
+.epk-highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.epk-highlight-card {
+  padding: 16px 18px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+}
+
+.epk-highlight-card .epk-highlight-value {
+  display: block;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.epk-highlight-card .epk-highlight-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* -- Downloads -- */
+
+.epk-download-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.epk-download-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 16px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+}
+
+.epk-download-card .epk-download-label {
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 13px;
+  color: #fff;
+}
+
+.epk-download-card .epk-download-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.epk-download-card .btn {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  font-size: 11px;
+}
+
+.epk-download-card.fan-disabled .btn { border-color: var(--border); color: var(--text-dim); }
+
+/* -- Technical / stage info -- */
+
+.epk-technical {
+  margin-top: 16px;
+}
+
+.epk-technical table {
+  width: 100%;
+  max-width: 560px;
+  border-collapse: collapse;
+}
+
+.epk-technical td {
+  padding: 8px 0;
+  border-bottom: 1px dotted var(--border);
+  vertical-align: top;
+}
+
+.epk-technical td.label {
+  width: 40%;
+  color: var(--pink);
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding-right: 12px;
+}
+
+.epk-technical-note {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 560px) {
+  .epk-hero-cta { flex-direction: column; align-items: stretch; }
+  .epk-download-card { flex-direction: column; align-items: flex-start; }
+  .epk-download-card .btn { align-self: stretch; text-align: center; }
+}

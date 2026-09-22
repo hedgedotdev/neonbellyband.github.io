@@ -785,6 +785,148 @@
 })();
 
 // ---------------------------------------------------------------
+// EPK page renderer.
+//
+// Reads js/epk-data.js (only loaded on epk/index.html) and builds the
+// video, artist-tag, highlight, photo, and download sections from it.
+// Runs before the gallery lightbox module below so photos it inserts
+// are already in the DOM when the lightbox scans for images.
+// Adding a video/artist/highlight/photo/download later only means
+// editing the EPK_DATA object — nothing here needs to change.
+// ---------------------------------------------------------------
+(function () {
+  if (typeof EPK_DATA === "undefined") return;
+
+  function el(tag, className, html) {
+    var e = document.createElement(tag);
+    if (className) e.className = className;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  // -- videos: featured + up to a few smaller ones, click-to-load so no
+  // iframe (or its tracking/JS payload) loads until a visitor asks for it --
+  function videoFacade(videoId, title, isFeatured) {
+    var wrap = el("div", "video-embed" + (isFeatured ? " epk-video-featured" : ""));
+    var thumb = el("button", "epk-video-facade");
+    thumb.type = "button";
+    thumb.style.backgroundImage = 'url("https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg")';
+    thumb.setAttribute("aria-label", "Play video: " + title);
+    thumb.appendChild(el("span"));
+    thumb.addEventListener("click", function () {
+      var iframe = document.createElement("iframe");
+      iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+      iframe.title = title;
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      wrap.innerHTML = "";
+      wrap.appendChild(iframe);
+    }, { once: true });
+    wrap.appendChild(thumb);
+    return wrap;
+  }
+
+  var featuredMount = document.getElementById("epk-video-featured");
+  if (featuredMount && EPK_DATA.videos && EPK_DATA.videos.length) {
+    var first = EPK_DATA.videos[0];
+    featuredMount.appendChild(videoFacade(first.id, first.title, true));
+    var cap = el("span", "epk-video-title", first.title);
+    featuredMount.parentNode.insertBefore(cap, featuredMount.nextSibling);
+  }
+
+  var gridMount = document.getElementById("epk-video-grid");
+  if (gridMount) {
+    var rest = (EPK_DATA.videos || []).slice(1);
+    if (rest.length) {
+      rest.forEach(function (v) {
+        var card = el("div", "epk-video-card");
+        card.appendChild(videoFacade(v.id, v.title, false));
+        card.appendChild(el("span", "epk-video-title", v.title));
+        gridMount.appendChild(card);
+      });
+    } else {
+      gridMount.appendChild(el("p", "epk-technical-note", "More live video coming soon."));
+    }
+  }
+
+  // -- The Sound: artist tags --
+  var tagMount = document.getElementById("epk-artist-tags");
+  if (tagMount) {
+    (EPK_DATA.artists || []).forEach(function (name) {
+      tagMount.appendChild(el("span", "epk-tag", name));
+    });
+  }
+
+  // -- Live highlights --
+  var hlMount = document.getElementById("epk-highlights");
+  if (hlMount) {
+    (EPK_DATA.highlights || []).forEach(function (h) {
+      var card = el("div", "epk-highlight-card");
+      card.appendChild(el("span", "epk-highlight-value", h.value));
+      card.appendChild(el("span", "epk-highlight-label", h.label));
+      hlMount.appendChild(card);
+    });
+  }
+
+  // -- Live photos (same markup as the Fans page gallery, so the
+  // existing lightbox picks these up with no extra selector needed) --
+  var photoMount = document.getElementById("epk-photo-grid");
+  if (photoMount) {
+    (EPK_DATA.photos || []).forEach(function (p) {
+      var card = el("a", "fan-photo-card");
+      card.href = p.src;
+      card.target = "_blank";
+      card.rel = "noopener";
+      var img = document.createElement("img");
+      img.src = p.src;
+      img.alt = p.alt || "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      card.appendChild(img);
+      photoMount.appendChild(card);
+    });
+  }
+
+  // -- Promotional downloads --
+  var dlMount = document.getElementById("epk-downloads");
+  if (dlMount) {
+    (EPK_DATA.downloads || []).forEach(function (d) {
+      var card = el("div", "epk-download-card" + (d.available ? "" : " fan-disabled"));
+      var text = el("span");
+      text.appendChild(el("span", "epk-download-label", d.label));
+      text.appendChild(el("span", "epk-download-note", d.available ? d.note : "Coming soon"));
+      card.appendChild(text);
+      if (d.available) {
+        var a = document.createElement("a");
+        a.className = "btn";
+        a.href = d.href;
+        a.download = "";
+        a.textContent = "Download";
+        card.appendChild(a);
+      } else {
+        var disabled = el("span", "btn", "Coming Soon");
+        disabled.setAttribute("aria-disabled", "true");
+        card.appendChild(disabled);
+      }
+      dlMount.appendChild(card);
+    });
+  }
+
+  // -- Technical / stage info --
+  var techMount = document.getElementById("epk-technical");
+  if (techMount) {
+    var table = document.createElement("table");
+    (EPK_DATA.technical || []).forEach(function (row) {
+      var tr = document.createElement("tr");
+      tr.appendChild(el("td", "label", row.label));
+      tr.appendChild(el("td", "", row.value));
+      table.appendChild(tr);
+    });
+    techMount.appendChild(table);
+  }
+})();
+
+// ---------------------------------------------------------------
 // Gallery lightbox.
 //
 // Every real photo inside a .post-gallery (posters and snapshots alike —
