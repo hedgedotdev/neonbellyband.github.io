@@ -82,6 +82,7 @@ var EPK_DATA = {
   technical: [
     { label: "Performers", value: "5 (vocals, two guitars, bass, drums)" },
     { label: "Typical Set Length", value: "Up to 3 hours" },
+    { label: "Area Served", value: "Franklin &amp; Brentwood, plus Spring Hill, Thompson's Station, Cool Springs, Murfreesboro, and Leiper's Fork" },
     { label: "Stage Footprint", value: "Contact for details" },
     { label: "Backline Notes", value: "Contact for details" },
     { label: "PA Requirements", value: "Contact for details" },
