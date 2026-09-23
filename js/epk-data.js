@@ -29,7 +29,8 @@ var EPK_DATA = {
   // song gets watched by a promoter, a 2-hour set doesn't.
   videos: [
     { id: "8cIlNQkQ5_c", title: "Everlong, Live at Kimbro's" },
-    { id: "71FY261ZnFA", title: "Say It Ain't So, Live at Kimbro's" }
+    { id: "71FY261ZnFA", title: "Say It Ain't So, Live at Kimbro's" },
+    { id: "aw7M0C_NbMg", title: "Plush, Live at Kimbro's" }
   ],
 
   // Plain-text only, no logos or album art, per band policy. This is
