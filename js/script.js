@@ -892,6 +892,41 @@
     });
   }
 
+  // -- One-page booking sheet (color / black & white, each with a
+  // preview thumbnail so a promoter can pick before downloading) --
+  var onesheetMount = document.getElementById("epk-onesheets");
+  if (onesheetMount) {
+    (EPK_DATA.onesheets || []).forEach(function (o) {
+      var card = el("div", "epk-onesheet-card");
+      var a = document.createElement("a");
+      a.href = o.thumb;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.className = "epk-onesheet-thumb";
+      var img = document.createElement("img");
+      img.src = o.thumb;
+      img.alt = "Preview of the " + o.label + " one-page booking sheet";
+      img.loading = "lazy";
+      img.decoding = "async";
+      a.appendChild(img);
+      card.appendChild(a);
+
+      var text = el("span", "epk-onesheet-meta");
+      text.appendChild(el("span", "epk-download-label", o.label));
+      text.appendChild(el("span", "epk-download-note", o.note));
+      card.appendChild(text);
+
+      var dl = document.createElement("a");
+      dl.className = "btn";
+      dl.href = o.href;
+      dl.download = "";
+      dl.textContent = "Download PDF";
+      card.appendChild(dl);
+
+      onesheetMount.appendChild(card);
+    });
+  }
+
   // -- Promotional downloads --
   var dlMount = document.getElementById("epk-downloads");
   if (dlMount) {

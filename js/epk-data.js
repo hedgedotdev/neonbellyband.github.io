@@ -29,7 +29,8 @@ var EPK_DATA = {
   // song gets watched by a promoter, a 2-hour set doesn't.
   videos: [
     { id: "8cIlNQkQ5_c", title: "Everlong, Live at Kimbro's" },
-    { id: "71FY261ZnFA", title: "Say It Ain't So, Live at Kimbro's" }
+    { id: "71FY261ZnFA", title: "Say It Ain't So, Live at Kimbro's" },
+    { id: "aw7M0C_NbMg", title: "Plush, Live at Kimbro's" }
   ],
 
   // Plain-text only, no logos or album art, per band policy. This is
@@ -68,6 +69,14 @@ var EPK_DATA = {
     { src: "../images/optimized/fans/IMG_1850.jpg", alt: "Neon Belly performing live" }
   ],
 
+  // The printable one-page booking sheet, in its own section with a
+  // preview thumbnail per version so a promoter can see which one
+  // they're getting before they download it.
+  onesheets: [
+    { label: "Color", note: "Full brand colors", thumb: "../images/epk/neon-belly-one-sheet-thumb-600.webp", href: "../images/epk/neon-belly-one-sheet.pdf" },
+    { label: "Black & White", note: "White background, low ink", thumb: "../images/epk/neon-belly-one-sheet-bw-thumb-600.webp", href: "../images/epk/neon-belly-one-sheet-bw.pdf" }
+  ],
+
   // available:true items link to a real file already in the repo.
   // available:false items are NOT linked to a real file; the href is
   // a documented placeholder path for wherever that asset should land
@@ -79,8 +88,7 @@ var EPK_DATA = {
     { label: "Band Photo (Vertical)", note: "Not yet available", href: "../images/epk/band-photo-vertical.jpg", available: false },
     { label: "Logo (Transparent PNG)", note: "For dark or light backgrounds", href: "../images/neon-belly-logo-transparent.png", available: true },
     { label: "Logo (Full Color, High-Res)", note: "Black background", href: "../images/neon-belly-logo.jpg", available: true },
-    { label: "Stage Plot & Input List", note: "Not yet available (PDF)", href: "../images/epk/neon-belly-stage-plot.pdf", available: false },
-    { label: "One-Page EPK / Booking Sheet", note: "Not yet available (PDF)", href: "../images/epk/neon-belly-one-sheet.pdf", available: false }
+    { label: "Stage Plot & Input List", note: "Not yet available (PDF)", href: "../images/epk/neon-belly-stage-plot.pdf", available: false }
   ],
 
   // Only fields with real, supplied information are shown with a
