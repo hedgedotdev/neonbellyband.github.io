@@ -3604,6 +3604,52 @@ html[data-title="archivo"]     { --title-scale: 0.92; }
   line-height: 1.4;
 }
 
+/* -- One-page booking sheet -- */
+
+.epk-onesheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+  max-width: 500px;
+}
+
+.epk-onesheet-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.epk-onesheet-thumb {
+  display: block;
+  aspect-ratio: 612 / 792;
+  overflow: hidden;
+  background: #000;
+}
+
+.epk-onesheet-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.epk-onesheet-thumb:hover img { transform: scale(1.03); }
+
+.epk-onesheet-meta {
+  display: block;
+  padding: 12px 14px 2px;
+}
+
+.epk-onesheet-card .btn {
+  margin: 12px 14px 14px;
+  text-align: center;
+}
+
 /* -- Downloads -- */
 
 .epk-download-grid {
@@ -3623,13 +3669,13 @@ html[data-title="archivo"]     { --title-scale: 0.92; }
   border: 1px solid var(--border);
 }
 
-.epk-download-card .epk-download-label {
+.epk-download-label {
   font-family: "Archivo Black", Arial, sans-serif;
   font-size: 13px;
   color: #fff;
 }
 
-.epk-download-card .epk-download-note {
+.epk-download-note {
   display: block;
   margin-top: 2px;
   font-size: 11px;
