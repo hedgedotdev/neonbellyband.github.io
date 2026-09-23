@@ -857,14 +857,24 @@
     });
   }
 
-  // -- Live highlights --
+  // -- Live highlights: featured ones (the most persuasive facts) get a
+  // bigger callout above the plain grid, instead of every fact reading
+  // at the same visual weight --
+  var hlFeaturedMount = document.getElementById("epk-highlights-featured");
   var hlMount = document.getElementById("epk-highlights");
-  if (hlMount) {
+  if (hlFeaturedMount || hlMount) {
     (EPK_DATA.highlights || []).forEach(function (h) {
-      var card = el("div", "epk-highlight-card");
-      card.appendChild(el("span", "epk-highlight-value", h.value));
-      card.appendChild(el("span", "epk-highlight-label", h.label));
-      hlMount.appendChild(card);
+      if (h.featured && hlFeaturedMount) {
+        var featured = el("div", "epk-highlight-featured-card");
+        featured.appendChild(el("span", "epk-highlight-featured-value", h.value));
+        featured.appendChild(el("span", "epk-highlight-featured-label", h.label));
+        hlFeaturedMount.appendChild(featured);
+      } else if (hlMount) {
+        var card = el("div", "epk-highlight-card");
+        card.appendChild(el("span", "epk-highlight-value", h.value));
+        card.appendChild(el("span", "epk-highlight-label", h.label));
+        hlMount.appendChild(card);
+      }
     });
   }
 

@@ -3528,6 +3528,40 @@ html[data-title="archivo"]     { --title-scale: 0.92; }
 
 /* -- Live highlights -- */
 
+/* the 1-2 most persuasive facts (set via featured:true in epk-data.js),
+   called out bigger and bolder above the plain grid below, instead of
+   every fact reading at the same visual weight */
+.epk-highlight-featured {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.epk-highlight-featured-card {
+  flex: 1 1 240px;
+  padding: 22px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.18), rgba(var(--accent2-rgb), 0.1));
+  border: 1px solid rgba(var(--accent-rgb), 0.55);
+}
+
+.epk-highlight-featured-value {
+  display: block;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 34px;
+  color: #fff;
+  text-shadow: 0 0 16px rgba(var(--accent-rgb), 0.6);
+  margin-bottom: 6px;
+}
+
+.epk-highlight-featured-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
 .epk-highlight-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
