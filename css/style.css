@@ -1098,9 +1098,9 @@ html[data-lang="es"] .lang-toggle {
    on hover, keeping the DVD-menu behaviour. */
 
 .btn {
-  --tube: #ff45c6;
-  --tube-soft: rgba(255, 69, 198, 0.5);
-  --tube-dim: rgba(255, 69, 198, 0.16);
+  --tube: var(--pink);
+  --tube-soft: rgba(var(--accent-rgb), 0.5);
+  --tube-dim: rgba(var(--accent-rgb), 0.16);
   position: relative;
   display: inline-flex;
   align-items: center;
