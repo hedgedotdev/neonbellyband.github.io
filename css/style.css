@@ -3421,22 +3421,25 @@ html[data-title="archivo"]     { --title-scale: 0.92; }
   color: var(--text-dim);
 }
 
-/* -- video section -- */
+/* -- video section --
+   Every clip renders at the same size in one row (no enlarged
+   "featured" video next to smaller ones), so the section still looks
+   balanced whether there's one clip or several. */
 
-.epk-video-featured {
-  max-width: 800px;
-  margin: 14px auto;
+.epk-video-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 14px;
 }
 
-.epk-video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 16px;
-  max-width: 900px;
-  margin: 10px auto 0;
+.epk-video-card {
+  flex: 1 1 320px;
+  max-width: 460px;
 }
 
-.epk-video-grid .video-embed {
+.epk-video-card .video-embed {
   max-width: none;
   margin: 0;
 }
@@ -3468,34 +3471,44 @@ html[data-title="archivo"]     { --title-scale: 0.92; }
   background: rgba(0, 0, 0, 0.44);
 }
 
-.epk-video-facade::after {
+/* the actual YouTube play button shape (red rounded rect, not a plain
+   circle) so it reads unmistakably as "click to play a YouTube video"
+   instead of a generic UI control */
+.epk-video-facade-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  background: #ff0000;
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.3), 0 4px 18px rgba(0, 0, 0, 0.5);
+}
+
+.epk-video-facade-icon::after {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 62px;
-  height: 62px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: rgba(var(--accent-rgb), 0.92);
-  box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.35), 0 0 24px rgba(var(--accent-rgb), 0.5);
-}
-
-.epk-video-facade span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-42%, -50%);
+  transform: translate(-40%, -50%);
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 12px 0 12px 20px;
-  border-color: transparent transparent transparent #08080a;
+  border-width: 11px 0 11px 19px;
+  border-color: transparent transparent transparent #fff;
 }
 
-.epk-video-grid .epk-video-facade::after { width: 46px; height: 46px; }
-.epk-video-grid .epk-video-facade span {
-  border-width: 9px 0 9px 15px;
+.epk-video-facade-badge {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 4px 9px 5px;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-family: "Archivo Black", Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3px;
 }
 
 .epk-video-title {
