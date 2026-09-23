@@ -25,10 +25,11 @@ var EPK_DATA = {
   // First entry is the large featured video. Anything after it renders
   // as smaller cards below. Each needs only a YouTube video ID (the
   // part after "v=" in a youtube.com/watch?v=... URL) and a title.
-  // Leave the array with just one entry until more live video exists;
-  // the page will not show fabricated placeholders.
+  // Short highlight clips only, not the full-length set: a 2-3 minute
+  // song gets watched by a promoter, a 2-hour set doesn't.
   videos: [
-    { id: "_h-DOCfCO3c", title: "Neon Belly Live at Kimbro's" }
+    { id: "8cIlNQkQ5_c", title: "Everlong, Live at Kimbro's" },
+    { id: "71FY261ZnFA", title: "Say It Ain't So, Live at Kimbro's" }
   ],
 
   // Plain-text only, no logos or album art, per band policy. This is
