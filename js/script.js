@@ -804,15 +804,18 @@
     return e;
   }
 
-  // -- videos: featured + up to a few smaller ones, click-to-load so no
-  // iframe (or its tracking/JS payload) loads until a visitor asks for it --
-  function videoFacade(videoId, title, isFeatured) {
-    var wrap = el("div", "video-embed" + (isFeatured ? " epk-video-featured" : ""));
+  // -- videos: click-to-load so no iframe (or its tracking/JS payload)
+  // loads until a visitor asks for it. Every video renders the same
+  // size in one row instead of one enlarged "featured" clip next to
+  // smaller ones, so a 2-clip EPK doesn't end up visually mismatched. --
+  function videoFacade(videoId, title) {
+    var wrap = el("div", "video-embed");
     var thumb = el("button", "epk-video-facade");
     thumb.type = "button";
     thumb.style.backgroundImage = 'url("https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg")';
-    thumb.setAttribute("aria-label", "Play video: " + title);
-    thumb.appendChild(el("span"));
+    thumb.setAttribute("aria-label", "Play video on YouTube: " + title);
+    thumb.appendChild(el("span", "epk-video-facade-icon"));
+    thumb.appendChild(el("span", "epk-video-facade-badge", "▶ YouTube"));
     thumb.addEventListener("click", function () {
       var iframe = document.createElement("iframe");
       iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
@@ -826,26 +829,18 @@
     return wrap;
   }
 
-  var featuredMount = document.getElementById("epk-video-featured");
-  if (featuredMount && EPK_DATA.videos && EPK_DATA.videos.length) {
-    var first = EPK_DATA.videos[0];
-    featuredMount.appendChild(videoFacade(first.id, first.title, true));
-    var cap = el("span", "epk-video-title", first.title);
-    featuredMount.parentNode.insertBefore(cap, featuredMount.nextSibling);
-  }
-
-  var gridMount = document.getElementById("epk-video-grid");
-  if (gridMount) {
-    var rest = (EPK_DATA.videos || []).slice(1);
-    if (rest.length) {
-      rest.forEach(function (v) {
+  var videoMount = document.getElementById("epk-videos");
+  if (videoMount) {
+    var vids = EPK_DATA.videos || [];
+    if (vids.length) {
+      vids.forEach(function (v) {
         var card = el("div", "epk-video-card");
-        card.appendChild(videoFacade(v.id, v.title, false));
+        card.appendChild(videoFacade(v.id, v.title));
         card.appendChild(el("span", "epk-video-title", v.title));
-        gridMount.appendChild(card);
+        videoMount.appendChild(card);
       });
     } else {
-      gridMount.appendChild(el("p", "epk-technical-note", "More live video coming soon."));
+      videoMount.appendChild(el("p", "epk-technical-note", "More live video coming soon."));
     }
   }
 
