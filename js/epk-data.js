@@ -80,7 +80,7 @@ var EPK_DATA = {
     { label: "Logo (Transparent PNG)", note: "For dark or light backgrounds", href: "../images/neon-belly-logo-transparent.png", available: true },
     { label: "Logo (Full Color, High-Res)", note: "Black background", href: "../images/neon-belly-logo.jpg", available: true },
     { label: "Stage Plot & Input List", note: "Not yet available (PDF)", href: "../images/epk/neon-belly-stage-plot.pdf", available: false },
-    { label: "One-Page EPK / Booking Sheet", note: "Not yet available (PDF)", href: "../images/epk/neon-belly-one-sheet.pdf", available: false }
+    { label: "One-Page EPK / Booking Sheet", note: "Printable PDF, one page", href: "../images/epk/neon-belly-one-sheet.pdf", available: true }
   ],
 
   // Only fields with real, supplied information are shown with a
